@@ -1,0 +1,57 @@
+<%@ Master Language="VB" CodeFile="MasterPageGR.master.vb" Inherits="MasterPageGR" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title> 
+    </title>
+</head>
+<!-- #include file='include/header.inc' -->
+<!-- #include file="include/top-navigation-grader.inc" -->
+<body class="gradebook">
+    <form id="form1" runat="server">
+    <div runat="server" id="checklist1" align="right">
+    </div>          
+    <div>
+        <div class="row">
+            <div>
+                <!-- Begin Container -->
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+        </div>
+    </div>
+    <!-- Bottom Paging Section -->
+    <!-- Begin Table of Contents Menu -->
+    <!-- End of Table of Contents Menu -->
+    <!-- Run the plugin -->
+
+    <script type="text/javascript">
+        $(window).load(function() {
+            $(this).joyride();
+        });
+    </script>
+
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+
+    <script type="text/javascript">
+        try {
+            var pageTracker = _gat._getTracker("UA-xxxxxx-x");
+            pageTracker._trackPageview();
+        } catch (err) { } 
+    </script>
+
+    <script type="text/javascript">
+        sublimevideo.ready(function() {
+            sublimevideo.onEnd(function(sv) {
+                sublimevideo.stop();
+            });
+        });
+    </script>
+
+    </form>
+</body>
+</html>

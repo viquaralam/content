@@ -1,0 +1,130 @@
+
+/*	--------------------------------------------------
+	Reveal Modals
+	-------------------------------------------------- */
+		
+	.reveal-modal-bg { 
+		position: fixed; 
+		height: 100%;
+		width: 100%;
+		background: #000;
+		z-index: 2000;
+		display: none;
+		top: 0;
+		left: 0; 
+		}
+	
+	.reveal-modal {
+		visibility: hidden;
+		top: 100px; 
+		left: 50%;
+		margin-left: -300px;
+		width: 520px;
+		background: #fff url(../images/misc/modal-gloss.png) no-repeat -200px -80px;
+		position: absolute;
+		z-index: 2001;
+		padding: 0;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		-moz-box-shadow: 0 0 10px rgba(0,0,0,.4);
+		-webkit-box-shadow: 0 0 10px rgba(0,0,0,.4);
+		box-shadow: 0 0 10px rgba(0,0,0,.4);
+		}
+		
+	.reveal-modal.small 		{ width: 200px; margin-left: -140px;}
+	.reveal-modal.medium 		{ width: 400px; margin-left: -240px;}
+	.reveal-modal.large 		{ width: 600px; margin-left: -340px;}
+	.reveal-modal.xlarge 		{ width: 800px; margin-left: -440px;}
+	
+	.reveal-modal h2 { 
+		height: 45px; line-height: 45px; padding-left: 15px; color: #57606d; font-weight: bold; font-size: 14px; background: #ffffff; /* Old browsers */ background: -moz-linear-gradient(top,  #ffffff 0%, #ecf1f3 99%, #ffffff 100%); /* FF3.6+ */ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(99%,#ecf1f3), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */ background: -webkit-linear-gradient(top,  #ffffff 0%,#ecf1f3 99%,#ffffff 100%); /* Chrome10+,Safari5.1+ */ background: -o-linear-gradient(top,  #ffffff 0%,#ecf1f3 99%,#ffffff 100%); /* Opera 11.10+ */ background: -ms-linear-gradient(top,  #ffffff 0%,#ecf1f3 99%,#ffffff 100%); /* IE10+ */ background: linear-gradient(top,  #ffffff 0%,#ecf1f3 99%,#ffffff 100%); /* W3C */ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */ border-radius: 4px 4px 0 0; text-align: center; border-bottom: 1px solid #bababa; -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, .2);
+-moz-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, .2);
+box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, .2);  }
+	
+	.reveal-modal h4 { font-size: 24px; font-size: 2.4rem; margin-bottom: 14px; }
+	
+	.reveal-modal hr { border: solid #cccccc; border-width: 1px 0 0; clear: both; margin: 12px 0 18px; height: 0; }
+	
+	
+	.reveal-modal .close-reveal-modal {
+		font-size: 22px;
+		line-height: .5;
+		position: absolute;
+		top: 8px;
+		right: 11px;
+		color: #aaa;
+		text-shadow: 0 -1px 1px rbga(0,0,0,.6);
+		font-weight: bold;
+		cursor: pointer;
+		} 
+	
+	.reveal-modal .row {
+		min-width: 0;
+	}
+	
+	/* Mobile */
+		
+		@media handheld, only screen and (device-width: 768px), (device-width: 800px) {
+			.reveal-modal-bg { position: absolute; }
+			
+			.reveal-modal,
+			.reveal-modal.small,
+			.reveal-modal.medium,
+			.reveal-modal.large,
+			.reveal-modal.xlarge { width: 60%; top: 30%; left: 15%; margin-left: 0; padding: 5%; height: auto; }
+		}
+		
+		@media handheld, only screen and (max-width: 767px) {
+			.reveal-modal-bg { position: absolute; }
+			
+			.reveal-modal,
+			.reveal-modal.small,
+			.reveal-modal.medium,
+			.reveal-modal.large,
+			.reveal-modal.xlarge { width: 80%; top: 15%; left: 5%; margin-left: 0; padding: 5%; height: auto; }
+		}
+	
+	
+	/*
+			
+	NOTES
+	
+	Close button entity is &#215;
+	
+	Example markup
+	
+	<div id="myModal" class="reveal-modal">
+		<h2>Awesome. I have it.</h2>
+		<p class="lead">Your couch.  I it's mine.</p>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices aliquet placerat. Duis pulvinar orci et nisi euismod vitae tempus lorem consectetur. Duis at magna quis turpis mattis venenatis eget id diam. </p>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
+	
+	*/
+	
+	/* -----------------------------------------
+   Table of Content Modal
+----------------------------------------- */
+
+.modalContent { padding: 20px 30px; }
+.modalContent p { font-size: 13px; font-size: 1.3rem; }
+
+#inline_content .modalContent { padding: 20px 0; }
+
+
+#TableOfContents  { min-width: 960px; margin-left: -480px; }
+#TableOfContents .modalContent { padding-bottom: 30px; display: inline-block;} 
+.ToCmenuItem { width: 23%; min-height: 120px; float: left; display: inline; padding: 0 1%; }
+
+.ToCLink { text-align: center; width: 100%; display: block; color: #444;height: 30px; line-height: 12px;}
+.ToCLink a { color: #444; font-size: 11px; font-size: 1.1rem; font-weight: bold; line-height: 16px; padding: 5px;display: block;}
+.ToCLink a.active { color: #058dd0; }
+.ToCLink:hover { background-color: #ddd; }
+.ToCimage { background: rgb( 256, 256, 256);  width: 100%; display: block; min-height: 80px; margin: 12px 0 0;}
+
+#inline_content h4 { color: #444; }
+#cboxClose span { font-size: 1.6rem; font-size: 16px; }
+
+.closebutton { position:absolute; top:24px; right:0; display:block; color:#444; font-size: 24px; font-weight: bold; }
+.closebutton span { font-size: 1.6rem; font-size: 16px;  }

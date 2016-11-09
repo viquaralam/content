@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="~/Index.aspx" title="home" description="Site Home" >
+    <siteMapNode url="" title="Security" description="" >
+      <siteMapNode url="" title="Access Rules" description="">
+        <siteMapNode url="" title="Access Rules Management" description="Setup access rules" />
+        <siteMapNode url="" title="Access Rules Summary" description="" />
+      </siteMapNode>
+    </siteMapNode>
+    
+    <siteMapNode url="" title="User Management"  description="" >
+      <siteMapNode url="" title="User List" description="" />
+      <siteMapNode url="" title="Add User" description="" />
+      <siteMapNode url="" title="Active Users" description="" />
+      <siteMapNode url="" title="Users Online" description="" />
+      <siteMapNode url="" title="Users Locked Out" description="" />
+  </siteMapNode>
+    
+    <siteMapNode url="" title="User Tools" description="" >
+      <siteMapNode url="" title="Register" description="" />
+      <siteMapNode url="" title="Change Password" description="" />
+      <siteMapNode url="" title="Password Recovery" description="" />
+      <siteMapNode url="" title="Login Status" description="" />
+      <siteMapNode/>
+        
+      <siteMapNode url="" title="Testing Center" description="">
+        <siteMapNode url="" title="Questions Editor" description="" />
+        <siteMapNode url="" title="Test Editor" description="" />
+      </siteMapNode>
+      
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>

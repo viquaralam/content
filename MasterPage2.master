@@ -1,0 +1,25 @@
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeFile="MasterPage2.master.vb"
+    Inherits="PracticeTests_MasterPage2" %>
+
+<!DOCTYPE html >
+
+
+<!-- #include file="~/include/header.inc" -->
+
+<body class="files">
+    <form id="form1" runat="server">        <!-- #include file="~/include/top-banner.inc" -->
+    
+       <div class="container">
+        <div class="row">
+            
+            
+                <!-- Begin Container -->
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+           
+        </div>
+    </div>
+    </form>
+    <!-- Bottom Paging Section -->
+</body>
+</html>

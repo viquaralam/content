@@ -1,0 +1,6 @@
+﻿<script language="vb">
+If (User.Identity.IsAuthenticated = False) Then
+            Server.Transfer("Login.aspx")
+        End If
+        
+</script>

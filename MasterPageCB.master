@@ -1,0 +1,59 @@
+<%@ Master Language="VB" CodeFile="MasterPageCB.master.vb" Inherits="MasterPageCB" %>
+
+<!DOCTYPE html>
+
+<!-- #include file='include/header.inc' -->
+<!-- #include file="include/top-navigation.inc" -->
+<body class="computerBasics">
+<a href="#content"><img src="images/skipnavimage.png" alt="Skip Navigation Link"></a> 
+            
+    <form id="form1" runat="server">
+    <div class="container">
+        <div class="row">
+            <!-- Begin Sidebar -->
+		    <!-- #include file="include/nav-sidebar.inc" -->
+			<!--! end of Sidebar -->
+
+            <div class="row">     
+            <!-- Begin Container -->
+            
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>    
+        </div>                
+        </div>
+    </div>
+    </form>
+    <!-- Bottom Paging Section -->
+    <!-- Begin Table of Contents Menu -->
+    <!-- #include file="include/toc-comp.inc" -->
+    
+    <!-- End of Table of Contents Menu -->
+    <!-- Run the plugin -->
+
+    <script type="text/javascript">
+        $(window).load(function() {
+            $(this).joyride();
+        });
+    </script>
+
+    <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+
+    <script type="text/javascript">
+        try {
+            var pageTracker = _gat._getTracker("UA-xxxxxx-x");
+            pageTracker._trackPageview();
+        } catch (err) { } 
+    </script>
+
+ <script type="text/javascript">
+sublimevideo.ready(function() {
+  sublimevideo.onEnd(function(sv) {
+    sublimevideo.stop();
+  });
+});
+</script>
+</body>
+</html>

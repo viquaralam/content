@@ -1,0 +1,6 @@
+Congratulations!  You've successfully installed SecoBackup.
+   Any time you change a file, it will be backed up with a version number to your local archive
+   To setup a remote network backup, go to configure page and define remote network folders
+
+
+					Thank You for choosing this product.  You will never have to worry about backup again

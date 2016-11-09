@@ -1,0 +1,130 @@
+<%@ Master Language="VB" CodeFile="AdminMasterPage.master.vb" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>empconcepts</title>  
+    <link href="stylesheet2.css" rel="stylesheet" type="text/css" />
+     <!--<link href="~/TestDrive.css" rel="stylesheet" type="text/css" />
+    <link type="text/css" href="WsatStyleSheet.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" type="text/css" href="stylesheet1.css" media="screen" />
+  <meta name="google-site-verification" content="TV0q40L6lZuTnO_W9uezLPe-lH8-2LBT9AM43KFhQiA" />
+
+</head>
+
+<body>
+    <form id="form1" runat="server">
+       <div style=" float:right; vertical-align:top ">
+           &nbsp;<asp:LoginName ID="LoginName2" runat="server" CssClass="boldtext" FormatString="Currently logged in as: {0}" Width="212px" />
+           <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/index.aspx">Return Home to logout.</asp:HyperLink>
+        </div> <table border="0" cellpadding="0" cellspacing="0" align="center" style="width: 100%; height: 600px; position: static;">
+            <tr>
+            <td style="height: 222px"> 
+        <div class="header-wrapper" style="height: 90px">
+            <div class="header-wrapper2" style="width: 1168px; height: 100px">
+                <div class="logo">
+                    <img src="../images/title.gif" alt="" style="width: 463px" />
+                </div>
+                <div style="text-align:left">
+                <asp:Menu ID="Menu1" runat="server" BackColor="White" BorderStyle="None" CssClass="nav" Font-Bold="True"
+                    Font-Names="Arial" Font-Size="10pt" ForeColor="Black" Orientation="Horizontal"
+                    StaticSubMenuIndent="10px" Height="17px" Width="414px" DynamicEnableDefaultPopOutImage="False" StaticEnableDefaultPopOutImage="False">
+                    <StaticMenuItemStyle HorizontalPadding="5px" VerticalPadding="0px" ItemSpacing="1px" Font-Size="10pt" Font-Names="arial" />
+                    <DynamicHoverStyle BackColor="#00AEEF" ForeColor="White" Font-Italic="False" Font-Size="10pt" />
+                    <DynamicMenuStyle BackColor="#00AEEF" />
+                    <DynamicMenuItemStyle HorizontalPadding="5px" />
+                    <StaticHoverStyle BackColor="#00AEEF" ForeColor="White" Font-Size="10pt" Font-Italic="False" Height="0px" BorderColor="#00AEEF" BorderStyle="Solid" BorderWidth="1px" />
+                    <Items>
+                        <asp:MenuItem NavigateUrl="~/Index.aspx" Text="home" Value="home" ></asp:MenuItem>
+                        <asp:MenuItem Text="security" Value="Security">
+                            <asp:MenuItem Text="Access Rules" Value="Access Rules">
+                                <asp:MenuItem NavigateUrl="~/admin/access_rule_summary.aspx" Text="Access Rule Summary"
+                                    Value="Access Rule Summary"></asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/admin/access_rules.aspx" Text="Access Rule Management"
+                                    Value="Access Rule Management"></asp:MenuItem>
+                            </asp:MenuItem>
+                            <asp:MenuItem Text="User Management" Value="User Management">
+                                <asp:MenuItem NavigateUrl="~/admin/users.aspx" Text="User List" Value="User List"></asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/admin/add_user.aspx" Text="Add Users" Value="Add Users">
+                                </asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/admin/active_users.aspx" Text="Active Users" Value="Active Users">
+                                </asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/admin/online_users.aspx" Text="Online Users" Value="Online Users">
+                                </asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/admin/locked_users.aspx" Text="Locked Out Users" Value="Locked Out Users">
+                                </asp:MenuItem>
+                            </asp:MenuItem>
+                            <asp:MenuItem Text="User Roles" Value="User Roles">
+                                <asp:MenuItem NavigateUrl="~/admin/roles.aspx" Text="Role Management" Value="Role Management">
+                                </asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/admin/users_by_role.aspx" Text="Users By Role" Value="Users By Role">
+                                </asp:MenuItem>
+                            </asp:MenuItem>
+                        </asp:MenuItem>
+                        <asp:MenuItem Text="user maintenance" Value="user maintenance">
+                            <asp:MenuItem NavigateUrl="~/admin/CreateUser.aspx" Text="Register" Value="Register"></asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/admin/ChangePassword.aspx" Text="Change Password" Value="Change Password">
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/admin/PasswordRecovery.aspx" Text="Password Recovery" Value="Password Recovery">
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/admin/LoginStatus.aspx" Text="Login Status" Value="Login Status">
+                            </asp:MenuItem>
+                            <asp:MenuItem Text="User Profile" Value="User Profile">
+                                <asp:MenuItem NavigateUrl="~/admin/ProfileEditor.aspx" 
+                                    Text="User Profile Editor" Value="User Profile Editor"></asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/admin/ProfileEditor3.aspx" 
+                                    Text="Unfiltered Grade Profile" Value="Unfiltered Grade Profile">
+                                </asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/admin/ProfileEditor2.aspx" 
+                                    Text="Filtered User Profile" Value="Filtered User Profile"></asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/admin/ProfileEditor3.aspx" 
+                                    Text="Filtered Profile by Type" Value="Filtered Profile by Type">
+                                </asp:MenuItem>
+                                <asp:MenuItem NavigateUrl="~/admin/UserProfile.aspx" Text="Short User Profile" 
+                                    Value="Short User Profile"></asp:MenuItem>
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/admin/CustomerEditor.aspx" Text="Customer Editor" Value="Customer Editor">
+                            </asp:MenuItem>
+                        </asp:MenuItem>
+                        <asp:MenuItem Text="Utilities" Value="Utilities">
+                            <asp:MenuItem NavigateUrl="~/admin/NewQuestions.aspx" Text="Edit Quiz Master" Value="Edit Quiz Master">
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/admin/NewQuizes.aspx" Text="Test Editor" Value="Test Editor">
+                            </asp:MenuItem>
+                            <asp:MenuItem NavigateUrl="~/admin/QuizEditor.aspx" Text="Test Results Editor" Value="Test Results Editor">
+                            </asp:MenuItem>
+                        </asp:MenuItem>
+                        <asp:MenuItem Text="Invoices" Value="Invoices">
+                            <asp:MenuItem NavigateUrl="~/admin/InvoiceEdit.aspx" Text="Task Invoicing" 
+                                Value="Task Invoicing"></asp:MenuItem>
+                        </asp:MenuItem>
+                    </Items>
+                    <StaticMenuStyle HorizontalPadding="0px" VerticalPadding="0px" />
+                    <StaticSelectedStyle ItemSpacing="5px" />
+                </asp:Menu>
+            
+                </div></div>
+            &nbsp; &nbsp;
+        </div>
+            
+               <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </td>
+            </tr>
+            <tr>
+            <td style="height: 31px">
+                &nbsp;</td>
+        </tr>
+        </table>
+        <div class="footer" style="text-align:center;">
+            <a href="../CopyRight.aspx" target="_blank" style="border-color:White;color:White; vertical-align: middle; text-align: center;">© Empowerment Concepts, LLC. - All Rights Reserved</a></div>
+        
+    </form>
+    
+        
+
+
+
+</body>
+</html>
