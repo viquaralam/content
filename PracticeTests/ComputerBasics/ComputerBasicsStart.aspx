@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="~/content/MasterPage1.master" AutoEventWireup="false" CodeFile="ComputerBasicsStart.aspx.vb" Inherits="Practice_ComputerBasics_FinalStart" title="DIDL Essential License Computer Basics Final Test" %>
+<%@ Page Language="VB" MasterPageFile="~/MasterPage1.master" AutoEventWireup="false" CodeFile="ComputerBasicsStart.aspx.vb" Inherits="Practice_ComputerBasics_FinalStart" title="DIDL Essential License Computer Basics Final Test" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     

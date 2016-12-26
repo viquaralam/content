@@ -7,6 +7,7 @@ Imports System.Diagnostics.Debug
 Imports System.Windows.Forms
 Imports System.Data.SqlClient
 Imports System.Data
+Imports System.Threading.Timer
 Partial Class Practice_FinalTests_FinalTest
     Inherits System.Web.UI.Page
     Dim StartTime As DateTime = DateTime.Now.ToString
@@ -256,9 +257,9 @@ Partial Class Practice_FinalTests_FinalTest
 
     Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
 
-        If Profile.IsAnonymous = True Then
-            Response.Redirect("~/Login.aspx")
-        End If
+        'If Profile.IsAnonymous = True Then
+        '    Response.Redirect("~/Login.aspx")
+        'End If
 
     End Sub
 

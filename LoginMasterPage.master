@@ -1,9 +1,9 @@
-<%@ Master Language="VB" CodeFile="MasterPage.master.vb" Inherits="MasterPage" %>
+<%@ Master Language="VB" CodeFile="LoginMasterPage.master.vb" Inherits="LoginMasterPage" %>
 
 <!DOCTYPE html>
 
 <!-- #include file="include/header.inc" -->
-
+<html>
 <body class="files study">
     
     <!-- #include file="include/top-navigation-login.inc" -->

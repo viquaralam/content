@@ -14,12 +14,15 @@ Partial Class Practice_SpreadSheet_TestDefault
         ' data element on top ...  :)
 
         If Page.IsPostBack = False Then
-            If Profile.IsAnonymous = False Then
-                Session.Add("UserName", User.Identity.Name)
-            Else
-                Response.Redirect("~/Login.aspx")
-            End If
+            'If Profile.IsAnonymous = False Then
+            '    Session.Add("UserName", User.Identity.Name)
+            'Else
+            '    Response.Redirect("~/Login.aspx")
+            'End If
         End If
     End Sub
 
+    Private Sub Practice_SpreadSheet_TestDefault_PreInit(sender As Object, e As EventArgs) Handles Me.PreInit
+        Session.Add("UserName", User.Identity.Name)
+    End Sub
 End Class

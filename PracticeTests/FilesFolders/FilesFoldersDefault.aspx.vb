@@ -13,13 +13,13 @@ Partial Class Practice_FilesFolders_TestsDefault
         ' using session, why not pile one more 
         ' data element on top ...  :)
 
-        If Page.IsPostBack = False Then
-            If Profile.IsAnonymous = False Then
-                Session.Add("UserName", User.Identity.Name)
-            Else
-                Response.Redirect("~/Login.aspx")
-            End If
-        End If
+        'If Page.IsPostBack = False Then
+        '    If Profile.IsAnonymous = False Then
+        '        Session.Add("UserName", User.Identity.Name)
+        '    Else
+        '        Response.Redirect("~/Login.aspx")
+        '    End If
+        'End If
     End Sub
 
 End Class

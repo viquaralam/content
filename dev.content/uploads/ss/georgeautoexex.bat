@@ -1,1 +1,0 @@
-subst k: c:\users\

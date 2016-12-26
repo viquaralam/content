@@ -265,9 +265,7 @@ QuestionArray(PagCnt) = NewQuestionId
 
     Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
 
-        If Profile.IsAnonymous = True Then
-            Response.Redirect("~/Login.aspx")
-        End If
+
 
     End Sub
 

@@ -1,5 +1,5 @@
 
-<%@ Page Language="VB" MasterPageFile="~/MasterPage1.master" AutoEventWireup="false" CodeFile="ffex2.aspx.vb" Inherits="Practice_FinalTests_FinalResults2"  title="Files & Folders Exercise" %>
+<%@ Page Language="VB" MasterPageFile="~/MasterPage1.master" AutoEventWireup="false" CodeFile="ffex2.aspx.vb" Inherits="ffex2"  title="Files & Folders Exercise" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 

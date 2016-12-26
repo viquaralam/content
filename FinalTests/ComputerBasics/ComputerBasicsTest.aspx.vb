@@ -7,6 +7,8 @@ Imports System.Diagnostics.Debug
 Imports System.Windows.Forms
 Imports System.Data.SqlClient
 Imports System.Data
+Imports System
+
 Partial Class TestingCenter_ComputerBasics_FinalTest
     Inherits System.Web.UI.Page
     Dim StartTime As DateTime = DateTime.Now.ToString
@@ -19,7 +21,7 @@ Partial Class TestingCenter_ComputerBasics_FinalTest
     Shared NewQuestionId As Integer = 0
     Shared SavQuestionId As Integer = 0
     Shared NewCorrectAnswer As String
-    Shared InitTime As Integer = 0
+    Public InitTime As Integer = 0
     Shared QuestionArray(25) As Integer
     Shared NewTitle As String
 
@@ -27,7 +29,8 @@ Partial Class TestingCenter_ComputerBasics_FinalTest
         Dim dr As System.Data.DataRowView
         Dim a As Answer = New Answer()
         Dim al As ArrayList
-        If InitTime = 0 Then
+
+        If InitTime = 0 And Label2.Text = "End Time" Then
             Label2.Text = DateTime.Now.AddMinutes(30).ToString
             InitTime = 1
             For i As Integer = 0 To 25  'clear question array
@@ -47,7 +50,7 @@ Partial Class TestingCenter_ComputerBasics_FinalTest
                 QuestionArray(PagCnt) = NewQuestionId
                 SavQuestionId = NewQuestionId
                 BindCt = 1
-                
+
                 PagCnt = PagCnt + 1
                 If PagCnt >= 25 Then
 
@@ -73,17 +76,12 @@ Partial Class TestingCenter_ComputerBasics_FinalTest
                     NewAnswer = ""
                     NewQuestionId = 0
                     NewCorrectAnswer = ""
+                    InitTime = 0
                     NewTitle = ""
                     Response.Redirect("ComputerBasicsResult1.aspx")
                 Else
-                    'QuestionArray(PagCnt) = NewQuestionId
 
-                    'a.UserAnswer = AnswerRadioButtonList.SelectedValue.ToString
 
-                    'al = CType(Session("AnswerList"), ArrayList)
-                    'al.Add(a) 
-
-                    'Session.Add("AnswerList",  al)
 
                 End If
 
@@ -126,6 +124,7 @@ Partial Class TestingCenter_ComputerBasics_FinalTest
                     NewAnswer = ""
                     NewQuestionId = 0
                     NewCorrectAnswer = ""
+                    InitTime = 0
                     NewTitle = ""
                     For i As Integer = 0 To 25  'clear question array
                         QuestionArray(i) = 0
@@ -203,7 +202,7 @@ Partial Class TestingCenter_ComputerBasics_FinalTest
 
             End If
             If PagCnt >= 25 Then
-                
+
                 a.QuestionID = NewQuestionId.ToString()
                 a.CorrectAnswer = NewCorrectAnswer.ToString()
                 a.UserAnswer = AnswerRadioButtonList.SelectedValue.ToString()
@@ -223,6 +222,7 @@ Partial Class TestingCenter_ComputerBasics_FinalTest
                 Finished = 0
                 NewAnswer = ""
                 NewCorrectAnswer = ""
+                InitTime = 0
                 NewTitle = ""
                 For i As Integer = 0 To 25
                     QuestionArray(i) = 0
@@ -259,25 +259,25 @@ Partial Class TestingCenter_ComputerBasics_FinalTest
 
     Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
 
-        If Profile.IsAnonymous = True Then
-            Response.Redirect("~/Login.aspx")
-        End If
+        'If Profile.IsAnonymous = True Then
+        '    Response.Redirect("~/Login.aspx")
+        'End If
 
     End Sub
 
     Protected Sub Timer1_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Timer1.Tick
         Label1.Text = DateTime.Now.ToString
-        If InitTime = 0 Then
+        If InitTime = 0 And Label2.Text = "End Time" Then
             Label2.Text = DateTime.Now.AddMinutes(30).ToString
             InitTime = 1
             For i As Integer = 0 To 25  'clear question array
                 QuestionArray(i) = 0
             Next i
         End If
-        If Label2.Text = Label1.Text Then
+        If DateTime.Parse(Label2.Text) <= DateTime.Parse(Label1.Text) Then
             MesgLabel.Visible = "True"
         End If
-        If Label2.Text = Label1.Text Then
+        If DateTime.Parse(Label2.Text) <= DateTime.Parse(Label1.Text) Then
             PagCnt = 0
             BindCt = 0
             SavCt = 0
@@ -288,6 +288,7 @@ Partial Class TestingCenter_ComputerBasics_FinalTest
             Finished = 0
             NewAnswer = ""
             NewCorrectAnswer = ""
+            InitTime = 0
             NewTitle = ""
 
             For i As Integer = 0 To 25  'clear question array

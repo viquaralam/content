@@ -28,15 +28,10 @@ Partial Class TestingCenter_FinalTests_FMTasks
 
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
         If IsPostBack = False Then
-            If Profile.IsAnonymous = False Then
-                Session.Add("UserName", User.Identity.Name)
-                Session.Add("Type", "FF Task")
-            Else
-                Response.Redirect("~/Login.aspx")
-            End If
+
 
             Freeze = 0
-            'Ptr = 0
+            Ptr = 0
             fileName = ""
             Start = ""
 
@@ -69,12 +64,14 @@ Partial Class TestingCenter_FinalTests_FMTasks
                 Else
                     X = n.ToString
                 End If
+                Session.Add("QuizId", 25)
+                Session.Add("Type", "FF Task")
                 If Profile.IsAnonymous = False Then
                     Session.Add("UserName", User.Identity.Name)
-                    Session.Add("QuizId", 25)
-                    Session.Add("Type", "FF Task")
-                Else
-                    Response.Redirect("~/Login.aspx")
+
+
+                    'Else
+                    '    Response.Redirect("~/Login.aspx")
                 End If
 
                 If Freeze = 0 Then
@@ -106,12 +103,109 @@ Partial Class TestingCenter_FinalTests_FMTasks
 
                 rowsAffected = userQuizDataSource.Insert()
 
+
+
+                Dim rowsAffected1 As String
+
+                Dim userQuizDataSource1 As SqlDataSource = New SqlDataSource()
+                Dim userEnrollDataSource3 As SqlDataSource = New SqlDataSource()
+                Dim dr As System.Data.DataRowView
+                
+                FormView1.DataBind()
+                dr = CType(FormView1.DataItem, System.Data.DataRowView)
+
+                Dim usersInfoConnection As SqlConnection
+                Dim SqlCommand As SqlCommand
+                Dim sdr As SqlDataReader
+                Dim CustomerId, UserSchool, UserCampus, UserClass As String
+
+                Try
+                    usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
+                    usersInfoConnection.Open()
+                    SqlCommand = New SqlCommand()
+                    SqlCommand.CommandType = CommandType.Text
+                    SqlCommand.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name.ToString
+                    SqlCommand.Connection = usersInfoConnection
+                    SqlCommand.CommandText = "SELECT CustomerId, UserSchool, UserCampus, UserClass FROM Users Where UserName = @UserName"
+                    sdr = SqlCommand.ExecuteReader()
+                    While sdr.Read()
+                        CustomerId = sdr(0).ToString()
+                        UserSchool = sdr(1).ToString()
+                        UserCampus = sdr(2).ToString()
+                        UserClass = sdr(3).ToString()
+                    End While
+
+                Catch
+                End Try
+
+                'Dim rowsAffected
+                userQuizDataSource1.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
+                userQuizDataSource1.InsertCommand = "INSERT INTO UserQuiz (QuizId, DateTimeComplete, Score, UserName, Questions, CorrectAns, CustomerId, School, Campus, Class, Grader, GradeDesc, Type, Grade, DateTaken, CheckHash) VALUES (@QuizId, @DateTimeComplete, @Score, @UserName, @Questions, @CorrectAns, @CustomerId, @School, @Campus, @Class, @Grader, @GradeDesc, @Type, @Grade, @DateTaken, @CheckHash)"
+
+                Dim Cell As String
+                'Cell = (If(dr Is Nothing, Nothing, dr("EnrollCampus").ToString))
+                If dr Is Nothing Then
+                    Cell = Nothing
+                Else
+                    Cell = dr("EnrollSchoolId").ToString()
+                End If
+
+                userQuizDataSource1.InsertParameters.Add("GradeDesc", "ff/didlFFTask" + X)
+                userQuizDataSource1.InsertParameters.Add("Questions", 0)
+                userQuizDataSource1.InsertParameters.Add("School", UserSchool)
+
+                'Cell = (If(dr Is Nothing, Nothing, dr("EnrollCampus").ToString)) 'Cell = If(dr Is Nothing, Nothing, dr("EnrollCampus").ToString)
+                If dr Is Nothing Then
+                    Cell = Nothing
+                Else
+                    Cell = dr("EnrollCampus").ToString()
+                End If
+                userQuizDataSource1.InsertParameters.Add("Campus", UserCampus)
+                'Cell = (If(dr Is Nothing, Nothing, dr("EnrollClass").ToString)) 'Cell = If(dr Is Nothing, Nothing, dr("EnrollClass").ToString)
+
+                If dr Is Nothing Then
+                    Cell = Nothing
+                Else
+                    Cell = dr("EnrollClass").ToString()
+                End If
+                userQuizDataSource1.InsertParameters.Add("Class", UserClass)
+                'Cell = (If(dr Is Nothing, Nothing, dr("EnrollCustomerId").ToString)) 'Cell = If(dr Is Nothing, Nothing, dr("EnrollCustomerId").ToString)
+
+                If dr Is Nothing Then
+                    Cell = Nothing
+                Else
+                    Cell = dr("EnrollCustomerId").ToString()
+                End If
+                userQuizDataSource1.InsertParameters.Add("CustomerId", CustomerId)
+                userQuizDataSource1.InsertParameters.Add("DateTaken", DateTime.Now.ToString)
+                userQuizDataSource1.InsertParameters.Add("DateTimeComplete", "")
+                userQuizDataSource1.InsertParameters.Add("UserName", User.Identity.Name.ToString)
+                userQuizDataSource1.InsertParameters.Add("QuizID", 28)
+                userQuizDataSource1.InsertParameters.Add("Grader", Int(1))
+                userQuizDataSource1.InsertParameters.Add("Type", "MC")
+                userQuizDataSource1.InsertParameters.Add("Score", "")
+                userQuizDataSource1.InsertParameters.Add("Grade", "Ungraded")
+                userQuizDataSource1.InsertParameters.Add("CorrectAns", "")
+                userQuizDataSource1.InsertParameters.Add("CheckHash", "FF Task" + User.Identity.Name.ToString + "ff/didlFFTask" + X)
+                rowsAffected1 = userQuizDataSource1.Insert()
+
+
+                Dim conn As SqlConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
+                Dim Command As SqlCommand = New SqlCommand("SELECT IDENT_CURRENT ('UserQuiz') AS Current_Identity")
+                Command.Connection = conn
+                conn.Open()
+                Dim Identity As Decimal = DirectCast(Command.ExecuteScalar(), Decimal)
+
+                conn.Close()
+
+
                 Dim rowsAffected2 As String
                 Dim userQuizDataSource2 As SqlDataSource = New SqlDataSource()
 
                 userQuizDataSource2.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                userQuizDataSource2.InsertCommand = "INSERT INTO CheckList (TaskType, TaskDate, TaskVer, UserName, TaskGrade, Task0, Task1, Task2, Task3, Task4, Task5, Task6, Task7, Task8, Task9, Task10, Task11, Task12, Task13, Task14, CheckHash, Tasky0, Tasky1, Tasky2, Tasky3, Tasky4, Tasky5, Tasky6, Tasky7, Tasky8, Tasky9, Tasky10, Tasky11, Tasky12, Tasky13, Tasky14) VALUES (@TaskType, @TaskDate, @TaskVer, @UserName, @TaskGrade, @Task0, @Task1, @Task2, @Task3, @Task4, @Task5, @Task6, @Task7, @Task8, @Task9, @Task10, @Task11, @Task12, @Task13, @Task14, @CheckHash, @Tasky0, @Tasky1, @Tasky2, @Tasky3, @Tasky4, @Tasky5, @Tasky6, @Tasky7, @Tasky8, @Tasky9, @Tasky10, @Tasky11, @Tasky12, @Tasky13, @Tasky14)"
+                userQuizDataSource2.InsertCommand = "INSERT INTO CheckList (UserQuizId, TaskType, TaskDate, TaskVer, UserName, TaskGrade, Task0, Task1, Task2, Task3, Task4, Task5, Task6, Task7, Task8, Task9, Task10, Task11, Task12, Task13, Task14, CheckHash, Tasky0, Tasky1, Tasky2, Tasky3, Tasky4, Tasky5, Tasky6, Tasky7, Tasky8, Tasky9, Tasky10, Tasky11, Tasky12, Tasky13, Tasky14) VALUES (@UserQuizId, @TaskType, @TaskDate, @TaskVer, @UserName, @TaskGrade, @Task0, @Task1, @Task2, @Task3, @Task4, @Task5, @Task6, @Task7, @Task8, @Task9, @Task10, @Task11, @Task12, @Task13, @Task14, @CheckHash, @Tasky0, @Tasky1, @Tasky2, @Tasky3, @Tasky4, @Tasky5, @Tasky6, @Tasky7, @Tasky8, @Tasky9, @Tasky10, @Tasky11, @Tasky12, @Tasky13, @Tasky14)"
 
+                userQuizDataSource2.InsertParameters.Add("UserQuizId", Identity)
                 userQuizDataSource2.InsertParameters.Add("TaskType", "FF Task")
                 userQuizDataSource2.InsertParameters.Add("TaskVer", "ff/didlFFTask" + X)
                 userQuizDataSource2.InsertParameters.Add("TaskDate", DateTime.Now.ToString)
@@ -152,39 +246,6 @@ Partial Class TestingCenter_FinalTests_FMTasks
                 userQuizDataSource2.InsertParameters.Add("Tasky15", "")
 
                 rowsAffected2 = userQuizDataSource2.Insert()
-                
-                Dim rowsAffected1 As String
-
-                Dim userQuizDataSource1 As SqlDataSource = New SqlDataSource()
-                Dim userEnrollDataSource3 As SqlDataSource = New SqlDataSource()
-                Dim dr As System.Data.DataRowView
-                
-                FormView1.DataBind()
-                dr = CType(FormView1.DataItem, System.Data.DataRowView)
-
-                'Dim rowsAffected
-                userQuizDataSource1.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                userQuizDataSource1.InsertCommand = "INSERT INTO UserQuiz (QuizId, DateTimeComplete, Score, UserName, Questions, CorrectAns, CustomerId, School, Campus, Class, Grader, GradeDesc, Type, Grade, DateTaken, CheckHash) VALUES (@QuizId, @DateTimeComplete, @Score, @UserName, @Questions, @CorrectAns, @CustomerId, @School, @Campus, @Class, @Grader, @GradeDesc, @Type, @Grade, @DateTaken, @CheckHash)"
-
-
-                userQuizDataSource1.InsertParameters.Add("GradeDesc", "ff/didlFFTask" + X)
-                userQuizDataSource1.InsertParameters.Add("Questions", 0)
-                userQuizDataSource1.InsertParameters.Add("School", dr("EnrollSchoolId").ToString)
-                userQuizDataSource1.InsertParameters.Add("Campus", dr("EnrollCampus").ToString)
-                userQuizDataSource1.InsertParameters.Add("Class", dr("EnrollClass").ToString)
-                userQuizDataSource1.InsertParameters.Add("CustomerId", dr("EnrollCustomerId").ToString())
-                userQuizDataSource1.InsertParameters.Add("DateTaken", DateTime.Now.ToString)
-                userQuizDataSource1.InsertParameters.Add("DateTimeComplete", "")
-                userQuizDataSource1.InsertParameters.Add("UserName", User.Identity.Name.ToString)
-                userQuizDataSource1.InsertParameters.Add("QuizID", Session("QuizID").ToString())
-                userQuizDataSource1.InsertParameters.Add("Grader", Int(1))
-                userQuizDataSource1.InsertParameters.Add("Type", "FF Task")
-                userQuizDataSource1.InsertParameters.Add("Score", "")
-                userQuizDataSource1.InsertParameters.Add("Grade", "Ungraded")
-                userQuizDataSource1.InsertParameters.Add("CorrectAns", "")
-                userQuizDataSource1.InsertParameters.Add("CheckHash", "FF Task" + User.Identity.Name.ToString + "ff/didlFFTask" + X)
-                rowsAffected1 = userQuizDataSource1.Insert()
-
 
             End If
         End If

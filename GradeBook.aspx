@@ -40,10 +40,10 @@
                                             <td>
                                                 <asp:UpdatePanel ID="UpdatePanel3" runat="server" RenderMode="Block">
                                                     <ContentTemplate>
-                                                        <asp:GridView ID="GridView3" runat="server" DataSourceID="SqlDataSource3">
+                                                        <asp:GridView ID="GridView3" runat="server" >
                                                             <HeaderStyle BackColor="#000066" ForeColor="White" />
                                                         </asp:GridView>
-                                                        <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
+                                                        <%--<asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
                                                             SelectCommand="SELECT Quiz.Title AS Exam,
                                                                                   UserQuiz.Grade As 'Pass/Fail',
                                                                                   MAX(UserQuiz.Score) AS Grade,
@@ -64,7 +64,7 @@
                                                             <SelectParameters>
                                                                 <asp:SessionParameter Name="UserName" SessionField="UserName" />
                                                             </SelectParameters>
-                                                        </asp:SqlDataSource>
+                                                        </asp:SqlDataSource>--%>
                                                         <hr />
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
@@ -88,7 +88,7 @@
                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                             <ContentTemplate>
                                                 <asp:GridView ID="GridView2" runat="server" AllowPaging="True" AutoGenerateColumns="False"
-                                                    DataSourceID="SqlDataSource2" HorizontalAlign="Left" Width="700px">
+                                                   HorizontalAlign="Left" Width="700px">
                                                     <RowStyle Width="200px" />
                                                     <Columns>
                                                         <asp:BoundField DataField="GradeDesc" HeaderText="Task Description" SortExpression="Task Description" />
@@ -98,25 +98,25 @@
                                                         <asp:BoundField DataField="Grader" HeaderText="Grader" SortExpression="Grader" Visible="False" />
                                                         <asp:BoundField DataField="Type" HeaderText="Type" SortExpression="Type" Visible="False" />
                                                         <asp:BoundField DataField="DateTaken" HeaderText="Date Attempted" SortExpression="Date Attempted" />
-                                                        <asp:HyperLinkField DataNavigateUrlFields="CheckHash" DataNavigateUrlFormatString="GradeBook1.aspx?CheckHash={0}"
-                                                            HeaderText="CheckList" Text="Select" />
+                                                        <asp:HyperLinkField DataNavigateUrlFields="UserQuizId" DataNavigateUrlFormatString="GradeBook1.aspx?UserQuizId={0}"
+                                                            HeaderText="UserQuizId" Text="Select" />
                                                     </Columns>
                                                     <PagerStyle ForeColor="Black" HorizontalAlign="Left" VerticalAlign="Middle" Wrap="True" />
                                                     <HeaderStyle BackColor="#000066" ForeColor="White" HorizontalAlign="Left" VerticalAlign="Middle"
                                                         BorderStyle="Solid" Height="50px" Font-Bold="False" Font-Size="12pt" />
                                                     <AlternatingRowStyle BackColor="#CCFFFF" HorizontalAlign="Left" VerticalAlign="Middle" />
                                                 </asp:GridView>
-                                                <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
-                                                    SelectCommand="SELECT Quiz.Title, UserQuiz.DateTimeComplete, UserQuiz.Score, UserQuiz.Type, UserQuiz.GradeDesc, UserQuiz.UserName, UserQuiz.Grade, UserQuiz.Grader, UserQuiz.DateTaken, UserQuiz.CheckHash 
+                                                <%--<asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
+                                                    SelectCommand="SELECT Quiz.Title, UserQuiz.DateTimeComplete, UserQuiz.Score, UserQuiz.Type, UserQuiz.GradeDesc, UserQuiz.UserName, UserQuiz.Grade, UserQuiz.Grader
                                                                     FROM UserQuiz INNER JOIN Quiz ON UserQuiz.QuizId = Quiz.QuizId 
                                                                     WHERE (UserQuiz.UserName = @UserName) AND (UserQuiz.QuizId=25)
                                                                        OR (UserQuiz.UserName = @UserName) AND (UserQuiz.QuizId=32)
                                                                        OR (UserQuiz.UserName = @UserName) AND (UserQuiz.QuizId=33) 
-                                                                    ORDER BY UserQuiz.DateTaken DESC">
+                                                                    ORDER BY UserQuiz.DateTimeComplete DESC">
                                                     <SelectParameters>
                                                         <asp:SessionParameter Name="UserName" SessionField="UserName" />
                                                     </SelectParameters>
-                                                </asp:SqlDataSource>
+                                                </asp:SqlDataSource>--%>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
                                         <br />
@@ -129,7 +129,7 @@
                                         </div>
                                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                                             <ContentTemplate>
-                                                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource1"
+                                                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
                                                     Width="700px" AllowPaging="True" AllowSorting="True" Height="181px" Font-Size="10pt"
                                                     BorderStyle="Solid" EnableTheming="False" GridLines="Vertical" HorizontalAlign="Left"
                                                     CaptionAlign="Left">
@@ -162,17 +162,17 @@
                                 <div class="row">
                                     <div class="twelve columns">
                                         <hr />
-                                        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
-                                            SelectCommand="SELECT Quiz.Title, UserQuiz.DateTimeComplete, UserQuiz.Score, UserQuiz.Type, UserQuiz.UserName, UserQuiz.DateTaken 
+                                        <%--<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
+                                            SelectCommand="SELECT Quiz.Title, UserQuiz.DateTimeComplete, UserQuiz.Score, UserQuiz.Type, UserQuiz.UserName
                                                             FROM UserQuiz INNER JOIN Quiz ON UserQuiz.QuizId = Quiz.QuizId 
                                                             WHERE (UserQuiz.UserName=@UserName) AND (UserQuiz.QuizId=34) 
                                                                OR (UserQuiz.Username=@UserName) AND (UserQuiz.QuizId=27)
                                                                OR (UserQuiz.Username=@UserName) AND (UserQuiz.QuizId=11) 
-                                                         ORDER BY UserQuiz.DateTaken DESC">
+                                                         ORDER BY UserQuiz.DateTimeComplete DESC">
                                             <SelectParameters>
                                                 <asp:SessionParameter Name="UserName" SessionField="UserName" />
                                             </SelectParameters>
-                                        </asp:SqlDataSource>
+                                        </asp:SqlDataSource>--%>
                                     </div>
                                 </div>
                                 <br />

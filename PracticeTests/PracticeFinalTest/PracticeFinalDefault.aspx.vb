@@ -14,12 +14,12 @@ Partial Class Practice_FinalTests_FinalDefault
         ' data element on top ...  :)
 
         If Page.IsPostBack = False Then
-            If Profile.IsAnonymous = False Then
-                Session.Add("UserName", User.Identity.Name)
-            Else
-                Response.Redirect("~/Login.aspx")
-            End If
+           
         End If
     End Sub
 
+    Private Sub Practice_FinalTests_FinalDefault_PreInit(sender As Object, e As EventArgs) Handles Me.PreInit
+        Session.Add("UserName", User.Identity.Name.ToString)
+
+    End Sub
 End Class

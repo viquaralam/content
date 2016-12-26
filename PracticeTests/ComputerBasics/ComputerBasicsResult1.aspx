@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="~/content/MasterPage2.master" AutoEventWireup="false" CodeFile="ComputerBasicsResult1.aspx.vb" Inherits="Practice_ComputerBasics_TestResult" title="Computer Basics Practice Quiz" %>
+<%@ Page Language="VB" MasterPageFile="~/MasterPage2.master" AutoEventWireup="false" CodeFile="ComputerBasicsResult1.aspx.vb" Inherits="Practice_ComputerBasics_TestResult" title="Computer Basics Practice Quiz" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <table align="center" style="width: 650px">
             <tr>

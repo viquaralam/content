@@ -38,8 +38,34 @@ Partial Class Practice_SpreadSheet_TestResult
 
             Dim userQuizDataSource As SqlDataSource = New SqlDataSource()
             Dim rowsAffected
+
+
+
+            Dim usersInfoConnection As SqlConnection
+            Dim SqlCommand As SqlCommand
+            Dim sdr As SqlDataReader
+            Dim CustomerId, UserSchool, UserCampus, UserClass As String
+
+            Try
+                usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
+                usersInfoConnection.Open()
+                SqlCommand = New SqlCommand()
+                SqlCommand.CommandType = CommandType.Text
+                SqlCommand.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name.ToString
+                SqlCommand.Connection = usersInfoConnection
+                SqlCommand.CommandText = "SELECT CustomerId, UserSchool, UserCampus, UserClass FROM Users Where UserName = @UserName"
+                sdr = SqlCommand.ExecuteReader()
+                While sdr.Read()
+                    CustomerId = sdr(0).ToString()
+                    UserSchool = sdr(1).ToString()
+                    UserCampus = sdr(2).ToString()
+                    UserClass = sdr(3).ToString()
+                End While
+
+            Catch
+            End Try
             userQuizDataSource.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-            userQuizDataSource.InsertCommand = "INSERT INTO [UserQuiz] ([QuizID], [DateTimeComplete], [Score], [UserName], [Questions], [Correctans]) VALUES (@QuizID, @DateTimeComplete, @Score, @UserName, @Questions, @Correctans)"
+            userQuizDataSource.InsertCommand = "INSERT INTO [UserQuiz] ([QuizID], [DateTimeComplete], [Score], [UserName], [Questions], [Correctans], CustomerId, School, Campus, Class, DateTaken) VALUES (@QuizID, @DateTimeComplete, @Score, @UserName, @Questions, @Correctans, @CustomerId, @School, @Campus, @Class, @DateTaken)"
 
             userQuizDataSource.InsertParameters.Add("QuizID", Session("QuizID").ToString())
             userQuizDataSource.InsertParameters.Add("DateTimeComplete", DateTime.Now.ToString())
@@ -47,6 +73,11 @@ Partial Class Practice_SpreadSheet_TestResult
             userQuizDataSource.InsertParameters.Add("UserName", User.Identity.Name)
             userQuizDataSource.InsertParameters.Add("Questions", questions.ToString)
             userQuizDataSource.InsertParameters.Add("Correctans", correct.ToString)
+            userQuizDataSource.InsertParameters.Add("Campus", UserCampus)
+            userQuizDataSource.InsertParameters.Add("School", UserSchool)
+            userQuizDataSource.InsertParameters.Add("Class", UserClass)
+            userQuizDataSource.InsertParameters.Add("CustomerId", CustomerId)
+            userQuizDataSource.InsertParameters.Add("DateTaken", DateTime.Now.ToString)
 
             rowsAffected = userQuizDataSource.Insert()
             If rowsAffected = 0 Then
@@ -106,9 +137,9 @@ Partial Class Practice_SpreadSheet_TestResult
 
     Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
 
-        If Profile.IsAnonymous = True Then
+        'If Profile.IsAnonymous = True Then
 
-            Response.Redirect("~/Login.aspx")
-        End If
+        '    Response.Redirect("~/Login.aspx")
+        'End If
     End Sub
 End Class

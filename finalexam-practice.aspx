@@ -93,8 +93,8 @@
 		
 <li>Click on <a href="PracticeTests/SpreadSheet/SpreadSheetDefault.aspx">SS Quiz</a> to practice questions from the <strong>Spreadsheets</strong> section.</li>							
 			
-<li>Go to the <a href="computerbasics-practice.php">Computer Basics Practice</a> page to practice questions from the <strong>Computer Basics</strong> section.</li>
-<li>Go to the <a href="internet-practice.php">Internet Practice</a> page to practice questions from the <strong>Internet</strong> section.</li>
+<li>Go to the <a href="computerbasics-practice.aspx">Computer Basics Practice</a> page to practice questions from the <strong>Computer Basics</strong> section.</li>
+<li>Go to the <a href="internet-practice.aspx">Internet Practice</a> page to practice questions from the <strong>Internet</strong> section.</li>
 </ul>
 
 </div>

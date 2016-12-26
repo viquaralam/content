@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="~/MasterPage1.master" AutoEventWireup="false" CodeFile="ssex2.aspx.vb" Inherits="Practice_FinalTests_FinalResults2"  title="Spreadsheets Exercise" %>		
+<%@ Page Language="VB" MasterPageFile="~/MasterPage1.master" AutoEventWireup="false" CodeFile="ssex2.aspx.vb" Inherits="ssex2"  title="Spreadsheets Exercise" %>		
 	
 			
 			

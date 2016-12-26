@@ -1,9 +1,11 @@
 
 Partial Class Practice_FilesFolders_TestStart
     Inherits System.Web.UI.Page
-    Protected Sub startButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles startButton.Click
+    Protected Sub startButton_Click(sender As Object, e As ImageClickEventArgs) Handles startButton.Click
         Response.Redirect("FilesFoldersTest.aspx")
+
     End Sub
+
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
@@ -28,9 +30,6 @@ Partial Class Practice_FilesFolders_TestStart
 
     Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
 
-        If Profile.IsAnonymous = True Then
 
-            Response.Redirect("~/Login.aspx")
-        End If
     End Sub
 End Class

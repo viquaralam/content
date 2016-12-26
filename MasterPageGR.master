@@ -1,7 +1,7 @@
 <%@ Master Language="VB" CodeFile="MasterPageGR.master.vb" Inherits="MasterPageGR" %>
 
 <!DOCTYPE html>
-
+<html>
 <!-- #include file='include/header.inc' -->
 <!-- #include file="include/top-navigation.inc" -->
 <body class="gradebook">

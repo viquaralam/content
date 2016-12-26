@@ -1,6 +1,6 @@
 
-Partial Class Practice_FinalTests_FinalResults2
+Partial Class wppractask
     Inherits System.Web.UI.Page
 
-   
+
 End Class

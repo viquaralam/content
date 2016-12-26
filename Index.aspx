@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Dashboard" Language="VB" CodeFile="~/Index.aspx.vb" Inherits="Index" %>
+﻿<%@ Page Title="Dashboard" Language="VB" CodeFile="Index.aspx.vb" Inherits="Index" %>
 
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml">

@@ -1,6 +1,6 @@
 
-Partial Class Practice_FinalTests_FinalResults2
+Partial Class wpex1
     Inherits System.Web.UI.Page
 
-   
+
 End Class

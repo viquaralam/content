@@ -26,8 +26,8 @@
                     <div class="row">
                         <div class="twelve columns">
                             <div id="quiz-container" style="text-align: center; vertical-align: middle;">
-                                <!--<asp:Button ID="startButton" runat="server" Text="Start" 
-                        OnClick="startButton_Click" Width="52px" /> -->
+
+
                                 <asp:ImageButton runat="server" ImageUrl="../../images/quiz/start.png" ID="ImageButton1"
                                     Text="Begin the Quiz" class="white test button radius" OnClick="startButton_Click"
                                     ImageAlign="Middle" />

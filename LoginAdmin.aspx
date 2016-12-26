@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="MasterPage.master" AutoEventWireup="false" CodeFile="LoginAdmin.aspx.vb" Inherits="Login" title="Administration Login" %>
+<%@ Page Language="VB" MasterPageFile="MasterPage.master" AutoEventWireup="false" CodeFile="LoginAdmin.aspx.vb" Inherits="LoginAdmin" title="Administration Login" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <div class="middle-wrapper-didl">
         <div class="middle-contact">

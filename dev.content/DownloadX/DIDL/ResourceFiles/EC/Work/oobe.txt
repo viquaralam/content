@@ -1,4 +1,0 @@
-@call "C:\system.sav\util\TDC\hprm-bcdfix.cmd"
-@C:\system.sav\util\MBRInst.exe /INI C:\Windows\SMINST\MBR.ini /Q
-@regedit.exe /s c:\system.sav\wauoobe\QLBUnins.reg
-@IF EXIST c:\SwSetup\QLB\Disk1\Setup.exe (c:\SwSetup\QLB\Disk1\Setup.exe /s)

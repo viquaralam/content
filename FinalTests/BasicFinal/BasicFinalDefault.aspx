@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="~/MasterPage.master" AutoEventWireup="false" CodeFile="BasicFinalDefault.aspx.vb" Inherits="TestingCenter_FinalTests_FinalDefault" title="Final Exam" %>
+﻿<%@ Page Language="VB" MasterPageFile="~/MasterPage.master" AutoEventWireup="false" CodeFile="BasicFinalDefault.aspx.vb" Inherits="TestingCenter_FinalTests_FinalDefault" title="Final Exam" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
                   

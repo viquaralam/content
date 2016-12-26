@@ -1,11 +1,11 @@
-<%@ Master Language="VB" CodeFile="MasterPage1.master.vb" Inherits="MasterPage" %>
+<%@ Master Language="VB" CodeFile="MasterPage1.master.vb" Inherits="MasterPage1" %>
 
 
 <!DOCTYPE html >
 
 
 <!-- #include file="~/include/header.inc" -->
-
+<html>
 <body class="files">
     <form id="form1" runat="server">
     

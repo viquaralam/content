@@ -13,16 +13,20 @@ Partial Class TestingCenter_ComputerBasics_FinalDefault
         ' using session, why not pile one more 
         ' data element on top ...  :)
 
-        If Page.IsPostBack = False Then
-            If Profile.IsAnonymous = False Then
-                Session.Add("UserName", User.Identity.Name)
-            Else
-                Response.Redirect("~/Login.aspx")
-            End If
-        End If
+        'If Page.IsPostBack = False Then
+        '    If Profile.IsAnonymous = False Then
+        '        Session.Add("UserName", User.Identity.Name)
+        '    Else
+        '        Response.Redirect("~/Login.aspx")
+        '    End If
+        'End If
     End Sub
 
-    Protected Sub GridView1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridView1.SelectedIndexChanged
+    Protected Sub GridView1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs)
 
+    End Sub
+
+    Private Sub TestingCenter_ComputerBasics_FinalDefault_PreInit(sender As Object, e As EventArgs) Handles Me.PreInit
+        Session.Add("UserName", User.Identity.Name.ToString)
     End Sub
 End Class

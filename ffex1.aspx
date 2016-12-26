@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="MasterPage1.master" AutoEventWireup="false" CodeFile="ffex1.aspx.vb" Inherits="Practice_FinalTests_FinalResults2"  title="Files & Folders Exercise" %>		
+<%@ Page Language="VB" MasterPageFile="MasterPage1.master" AutoEventWireup="false" CodeFile="ffex1.aspx.vb" Inherits="ffex1"  title="Files & Folders Exercise" %>		
 	
 			
 			

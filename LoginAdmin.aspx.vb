@@ -1,8 +1,8 @@
 
-Partial Class Login
+Partial Class LoginAdmin
     Inherits System.Web.UI.Page
 
-    
+
     Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
 
         If Profile.IsAnonymous = False Then

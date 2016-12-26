@@ -1,7 +1,7 @@
 
 Partial Class TestingCenter_FinalTests_FinalStart
     Inherits System.Web.UI.Page
-    Protected Sub startButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles startButton.Click
+    Protected Sub startButton_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles startButton.Click
         Response.Redirect("BasicFinalTest.aspx")
     End Sub
 
@@ -28,9 +28,9 @@ Partial Class TestingCenter_FinalTests_FinalStart
 
     Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
 
-        If Profile.IsAnonymous = True Then
+        'If Profile.IsAnonymous = True Then
 
-            Response.Redirect("~/Login.aspx")
-        End If
+        '    Response.Redirect("~/Login.aspx")
+        'End If
     End Sub
 End Class

@@ -42,6 +42,30 @@ Partial Class TestingCenter_FinalTests_FinalResult
                 dr = CType(FormView1.DataItem, System.Data.DataRowView)
                 Dim score As Double = (correct / questions) * 100
 
+                Dim usersInfoConnection As SqlConnection
+                Dim SqlCommand As SqlCommand
+                Dim sdr As SqlDataReader
+                Dim CustomerId, UserSchool, UserCampus, UserClass As String
+
+                Try
+                    usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
+                    usersInfoConnection.Open()
+                    SqlCommand = New SqlCommand()
+                    SqlCommand.CommandType = CommandType.Text
+                    SqlCommand.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name.ToString
+                    SqlCommand.Connection = usersInfoConnection
+                    SqlCommand.CommandText = "SELECT CustomerId, UserSchool, UserCampus, UserClass FROM Users Where UserName = @UserName"
+                    sdr = SqlCommand.ExecuteReader()
+                    While sdr.Read()
+                        CustomerId = sdr(0).ToString()
+                        UserSchool = sdr(1).ToString()
+                        UserCampus = sdr(2).ToString()
+                        UserClass = sdr(3).ToString()
+                    End While
+
+                Catch
+                End Try
+
                 Dim userQuizDataSource As SqlDataSource = New SqlDataSource()
                 Dim rowsAffected
                 userQuizDataSource.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
@@ -55,10 +79,10 @@ Partial Class TestingCenter_FinalTests_FinalResult
                     userQuizDataSource.InsertParameters.Add("DateTimeComplete", "")
                     userQuizDataSource.InsertParameters.Add("Grade", "Fail")
                 End If
-                userQuizDataSource.InsertParameters.Add("CustomerId", dr("EnrollCustomerId").ToString())
-                userQuizDataSource.InsertParameters.Add("School", dr("EnrollSchoolId").ToString())
-                userQuizDataSource.InsertParameters.Add("Campus", dr("EnrollCampus").ToString())
-                userQuizDataSource.InsertParameters.Add("Class", dr("EnrollClass").ToString())
+                userQuizDataSource.InsertParameters.Add("CustomerId", CustomerId)
+                userQuizDataSource.InsertParameters.Add("School", UserSchool)
+                userQuizDataSource.InsertParameters.Add("Campus", UserCampus)
+                userQuizDataSource.InsertParameters.Add("Class", UserClass)
                 userQuizDataSource.InsertParameters.Add("DateTaken", DateTime.Now.ToString())
                 userQuizDataSource.InsertParameters.Add("Type", "Final Test")
                 userQuizDataSource.InsertParameters.Add("Score", CInt(score))
@@ -124,9 +148,7 @@ Partial Class TestingCenter_FinalTests_FinalResult
 
     Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
         Ptr = 0
-        If Profile.IsAnonymous = True Then
-            Response.Redirect("~/Login.aspx")
-        End If
+
     End Sub
 
     Protected Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Unload

@@ -1,8 +1,13 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="Login.aspx.vb" MasterPageFile="~/LoginMasterPage.master"
-    Inherits="Login" Title="Login didljumpstart" %>
+<%@ Page Language="VB" AutoEventWireup="false" CodeFile="Login.aspx.vb" MasterPageFile="~/LoginMasterPage.master" Inherits="Login" Title="Login didljumpstart" %>
+<%--<!DOCTYPE html>
 
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+    <body>--%>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-<div id="loginbox" class="btn nine columns center">
+    <div id="loginbox" class="btn nine columns center">
     <div class="row">
     <asp:LoginView ID="LoginView1" runat="server">
             </asp:LoginView>
@@ -19,15 +24,19 @@
         </div>
         <div class="eight columns centered">
             <asp:Login ID="Login1" runat="server" Width="397px" Height="268px" TitleText="" PasswordRecoveryText="Forgot password?"
-                PasswordRecoveryUrl="PasswordRecovery.aspx" BorderStyle="None" 
+                PasswordRecoveryUrl="PasswordRecovery.aspx" BorderStyle="None"  OnLoggedIn="LoggedIn"
                 BorderPadding="0" DestinationPageUrl="~/pledge.aspx">
                 <CheckBoxStyle CssClass="smallLabel" />
                 <TextBoxStyle CssClass="input-text" />
                 <LoginButtonStyle CssClass="nice small radius blue button right" />
             </asp:Login>
             
+          
+            
         </div>
          
     </div>
     
 </asp:Content>
+    <%--</body>
+    </html>--%>

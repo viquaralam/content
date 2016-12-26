@@ -1,7 +1,9 @@
 
+Imports System.Collections
+
 Partial Class TestingCenter_ComputerBasics_FinalStart
     Inherits System.Web.UI.Page
-    Protected Sub startButton_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles startButton.Click
+    Protected Sub startButton_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles startButton.Click
         Response.Redirect("ComputerBasicsTest.aspx")
     End Sub
 
@@ -26,11 +28,5 @@ Partial Class TestingCenter_ComputerBasics_FinalStart
 
     End Sub
 
-    Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
 
-        If Profile.IsAnonymous = True Then
-
-            Response.Redirect("~/Login.aspx")
-        End If
-    End Sub
 End Class

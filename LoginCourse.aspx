@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="MasterPage.master" AutoEventWireup="false" CodeFile="LoginCourse.aspx.vb" Inherits="Login" title="Course Login" %>
+<%@ Page Language="VB" MasterPageFile="MasterPage.master" AutoEventWireup="false" CodeFile="LoginCourse.aspx.vb" Inherits="LoginCourse" title="Course Login" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
     <div class = "middle-wrapper-didl">
 			<div class = "middle-didl">

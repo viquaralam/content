@@ -19,7 +19,7 @@ Partial Class TestingCenter_FinalTests_FinalTest
     Shared NewQuestionId As Integer = 0
     Shared SavQuestionId As Integer = 0
     Shared NewCorrectAnswer As String
-    Shared InitTime As Integer = 0
+    Public InitTime As Integer = 0
     Shared QuestionArray(25) As Integer
     Shared NewTitle As String
 
@@ -28,7 +28,7 @@ Partial Class TestingCenter_FinalTests_FinalTest
         Dim a As Answer = New Answer()
         Dim al As ArrayList
 
-        If InitTime = 0 Then
+        If InitTime = 0 And Label2.Text = "End Time" Then
             Label2.Text = DateTime.Now.AddMinutes(30).ToString
             InitTime = 1
             For i As Integer = 0 To 25  'clear question array
@@ -39,21 +39,18 @@ Partial Class TestingCenter_FinalTests_FinalTest
         SavCt1 = 0
         questionDetails.DataBind()
         If IsPostBack = False Then
-
-
             If BindCt = 0 And SavQuestionId = NewQuestionId Then
 
                 dr = CType(questionDetails.DataItem, System.Data.DataRowView)
                 NewQuestionId = dr("QuestionId").ToString()
-
                 NewCorrectAnswer = dr("CorrectAnswer").ToString()
                 NewTitle = dr("Title").ToString()
                 QuestionArray(PagCnt) = NewQuestionId
                 SavQuestionId = NewQuestionId
                 BindCt = 1
+
                 PagCnt = PagCnt + 1
                 If PagCnt >= 25 Then
-                    
 
                     a.QuestionID = NewQuestionId.ToString()
                     a.CorrectAnswer = NewCorrectAnswer.ToString()
@@ -84,12 +81,6 @@ Partial Class TestingCenter_FinalTests_FinalTest
                 Else
 
 
-                    'a.UserAnswer = AnswerRadioButtonList.SelectedValue.ToString
-
-                    'al = CType(Session("AnswerList"), ArrayList)
-                    'al.Add(a) 
-
-                    'Session.Add("AnswerList",  al)
 
                 End If
 
@@ -208,11 +199,11 @@ Partial Class TestingCenter_FinalTests_FinalTest
                 'End If
                 'End If
             Else
-                
+
 
             End If
             If PagCnt >= 25 Then
-                
+
                 a.QuestionID = NewQuestionId.ToString()
                 a.CorrectAnswer = NewCorrectAnswer.ToString()
                 a.UserAnswer = AnswerRadioButtonList.SelectedValue.ToString()
@@ -220,7 +211,6 @@ Partial Class TestingCenter_FinalTests_FinalTest
 
                 al = CType(Session("AnswerList"), ArrayList)
                 al.Add(a)
-
                 Session.Add("AnswerList", al)
                 PagCnt = 0
                 BindCt = 0
@@ -249,15 +239,13 @@ Partial Class TestingCenter_FinalTests_FinalTest
                 NewQuestionId = dr("QuestionId").ToString
                 For i As Integer = 0 To 25
                     If QuestionArray(i) = NewQuestionId Then
-                        
                         Dim userQuizDataSource As SqlDataSource = New SqlDataSource()
                         Dim rowsAffected
                         userQuizDataSource.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                        userQuizDataSource.SelectCommand  = "SELECT QuestionId, Title, Answer1, Answer2, Answer3, Answer4, Answer5, CorrectAnswer, AnswerExplanation, QuestionNo, Sections FROM Questions WHERE (Sections = 'Computer Basics') OR (Sections = 'Internet') OR (Sections = 'Word Processing') OR (Sections = 'SpreadSheets') OR (Sections = 'Files and Folders') ORDER BY newid()"
+                        userQuizDataSource.SelectCommand = "SELECT QuestionId, Title, Answer1, Answer2, Answer3, Answer4, Answer5, CorrectAnswer, AnswerExplanation, QuestionNo, Sections FROM Questions WHERE (Sections = 'Computer Basics') OR (Sections = 'Internet') OR (Sections = 'Word Processing') OR (Sections = 'SpreadSheets') OR (Sections = 'Files and Folders') ORDER BY newid()"
                         questionDetails.DataBind()
                         dr = CType(questionDetails.DataItem, System.Data.DataRowView)
                         NewQuestionId = dr("QuestionId")
-
                     End If
                 Next i
                 QuestionArray(PagCnt) = NewQuestionId
@@ -266,30 +254,28 @@ Partial Class TestingCenter_FinalTests_FinalTest
 
                 PagCnt = PagCnt + 1
             End If
-            
         End If
-
     End Sub
 
     Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
 
-        If Profile.IsAnonymous = True Then
-            Response.Redirect("~/Login.aspx")
-        End If
+        'If Profile.IsAnonymous = True Then
+        '    Response.Redirect("~/Login.aspx")
+        'End If
 
     End Sub
 
     Protected Sub Timer1_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Timer1.Tick
         Label1.Text = DateTime.Now.ToString
-        If InitTime = 0 Then
+        If InitTime = 0 And Label2.Text = "End Time" Then
             Label2.Text = DateTime.Now.AddMinutes(30).ToString
             InitTime = 1
 
         End If
-        If Label2.Text = Label1.Text Then
+        If DateTime.Parse(Label2.Text) <= DateTime.Parse(Label1.Text) Then
             MesgLabel.Visible = "True"
         End If
-        If Label2.Text = Label1.Text Then
+        If DateTime.Parse(Label2.Text) <= DateTime.Parse(Label1.Text) Then
             PagCnt = 0
             BindCt = 0
             SavCt = 0

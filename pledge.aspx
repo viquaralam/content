@@ -1,5 +1,4 @@
-<%@ Page Language="VB" AutoEventWireup="false" CodeFile="Login.aspx.vb" MasterPageFile="~/LoginMasterPage.master"
-    Inherits="Login" Title="EC Pledge" %>
+<%@ Page Language="VB" AutoEventWireup="false" MasterPageFile="~/LoginMasterPage.master" CodeFile="Pledge.aspx.vb" Inherits="Pledge" Title="EC Pledge" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 

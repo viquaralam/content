@@ -1,4 +1,4 @@
-<%@ Page Language="VB" MasterPageFile="~/MasterPage1.master" AutoEventWireup="false" CodeFile="wpex3.aspx.vb" Inherits="Practice_FinalTests_FinalResults2"  title="Word Processing Exercise" %>		
+<%@ Page Language="VB" MasterPageFile="~/MasterPage1.master" AutoEventWireup="false" CodeFile="wpex3.aspx.vb" Inherits="wpex3"  title="Word Processing Exercise" %>		
 	
 			
 			
