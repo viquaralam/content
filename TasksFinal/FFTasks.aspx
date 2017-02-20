@@ -72,7 +72,7 @@
                         <br />  
                         <br />  
                         <br />
-                    <asp:FormView ID="FormView1" runat="server" DataSourceID="SqlDataSource1" HeaderText="Class"
+                    <%--<asp:FormView ID="FormView1" runat="server" DataSourceID="SqlDataSource1" HeaderText="Class"
                         Width="240px" Height="94px" EmptyDataText="No enrollment record found">
                         <EditItemTemplate>
                             EnrollUser:
@@ -133,7 +133,7 @@
                             <asp:Label ID="EnrollSchoolIdLabel" runat="server" Text='<%# Bind("EnrollSchoolId") %>' />
                             <br />
                         </ItemTemplate>
-                    </asp:FormView>
+                    </asp:FormView>--%>
                     </td>
                     <td style="height: 85px; text-align: left;" colspan="2">
                         <asp:HyperLink ID="TaskLink1" runat="server" NavigateUrl="~/FinalTests/Tasks/FM/didlFMTask1.pdf"

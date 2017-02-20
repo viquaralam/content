@@ -101,7 +101,7 @@
                         <br />
                         <br />
                         <br />
-                        <asp:FormView ID="FormView1" runat="server" DataSourceID="SqlDataSource1" 
+                       <%-- <asp:FormView ID="FormView1" runat="server" DataSourceID="SqlDataSource1" 
                             Width="250px">
                             <EditItemTemplate>
                                 EnrollUser:
@@ -177,7 +177,7 @@
                                     Text='<%# Bind("EnrollSchoolId") %>' />
                                 <br />
                             </ItemTemplate>
-                        </asp:FormView>
+                        </asp:FormView>--%>
                         <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
                             ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>" 
                             SelectCommand="SELECT [EnrollUser], [EnrollCustomerId], [EnrollClass], [EnrollCampus], [EnrollSchoolId] FROM [Enrollment] WHERE ([EnrollUser] = @EnrollUser)">

@@ -1,4 +1,6 @@
 
+Imports System.Windows.Forms
+
 Partial Class TestingCenter_FinalTests_FinalResult
     Inherits System.Web.UI.Page
     Shared Ptr As Int16 = 0
@@ -38,14 +40,15 @@ Partial Class TestingCenter_FinalTests_FinalResult
                 Next
                 Dim dr As System.Data.DataRowView
 
-                FormView1.DataBind()
-                dr = CType(FormView1.DataItem, System.Data.DataRowView)
+                'FormView1.DataBind()
+                'dr = CType(FormView1.DataItem, System.Data.DataRowView)
                 Dim score As Double = (correct / questions) * 100
 
                 Dim usersInfoConnection As SqlConnection
                 Dim SqlCommand As SqlCommand
                 Dim sdr As SqlDataReader
                 Dim CustomerId, UserSchool, UserCampus, UserClass As String
+                Dim GraderId, GrdrUsername As String
 
                 Try
                     usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
@@ -54,7 +57,7 @@ Partial Class TestingCenter_FinalTests_FinalResult
                     SqlCommand.CommandType = CommandType.Text
                     SqlCommand.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name.ToString
                     SqlCommand.Connection = usersInfoConnection
-                    SqlCommand.CommandText = "SELECT CustomerId, UserSchool, UserCampus, UserClass FROM Users Where UserName = @UserName"
+                    SqlCommand.CommandText = "SELECT EnrollCustomerId, EnrollSchoolId, EnrollCampus, EnrollClass FROM Enrollment Where EnrollUser = @UserName"
                     sdr = SqlCommand.ExecuteReader()
                     While sdr.Read()
                         CustomerId = sdr(0).ToString()
@@ -63,13 +66,36 @@ Partial Class TestingCenter_FinalTests_FinalResult
                         UserClass = sdr(3).ToString()
                     End While
 
+                    If sdr.IsClosed = False Then
+                        sdr.Close()
+                    End If
+                    SqlCommand = New SqlCommand()
+                    SqlCommand.CommandType = CommandType.Text
+                    SqlCommand.Parameters.Add("GrdrCustomerId", SqlDbType.Int).Value = CustomerId
+                    SqlCommand.Parameters.Add("GrdrSchoolId", SqlDbType.Int).Value = UserSchool
+                    SqlCommand.Parameters.Add("GrdrCampusId", SqlDbType.Int).Value = UserCampus
+                    SqlCommand.Parameters.Add("GrdrClassId", SqlDbType.Int).Value = UserClass
+                    SqlCommand.Connection = usersInfoConnection
+                    SqlCommand.CommandText = "SELECT GrdrId, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
+                    sdr = SqlCommand.ExecuteReader()
+                    While sdr.Read()
+                        GraderId = sdr(0).ToString()
+                        GrdrUsername = sdr(1).ToString()
+                    End While
+
+                    If String.IsNullOrEmpty(GraderId) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
+                        Session("ShowPopupOnCertification") = True
+                        Response.Redirect("~\Certification.aspx")
+                        Return
+                    End If
+
                 Catch
                 End Try
 
                 Dim userQuizDataSource As SqlDataSource = New SqlDataSource()
                 Dim rowsAffected
                 userQuizDataSource.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                userQuizDataSource.InsertCommand = "INSERT INTO [UserQuiz] ([QuizID], [DateTimeComplete],[School], [Campus], [Class], [CustomerId],  [Score], [UserName], [Questions], [Correctans], [DateTaken], [Type], [Grade]) VALUES (@QuizID, @DateTimeComplete, @School, @Class, @Campus, @CustomerId, @Score, @UserName, @Questions, @Correctans, @DateTaken, @Type, @Grade)"
+                userQuizDataSource.InsertCommand = "INSERT INTO [UserQuiz] ([QuizID], Grader,GraderUserName, [DateTimeComplete],[School], [Campus], [Class], [CustomerId],  [Score], [UserName], [Questions], [Correctans], [DateTaken], [Type], [Grade]) VALUES (@QuizID, @GraderId, @GrdrUsername, @DateTimeComplete, @School, @Campus, @Class, @CustomerId, @Score, @UserName, @Questions, @Correctans, @DateTaken, @Type, @Grade)"
 
                 userQuizDataSource.InsertParameters.Add("QuizID", Session("QuizID").ToString())
                 If score >= 90 Then
@@ -79,6 +105,8 @@ Partial Class TestingCenter_FinalTests_FinalResult
                     userQuizDataSource.InsertParameters.Add("DateTimeComplete", "")
                     userQuizDataSource.InsertParameters.Add("Grade", "Fail")
                 End If
+                userQuizDataSource.InsertParameters.Add("GraderId", GraderId)
+                userQuizDataSource.InsertParameters.Add("GrdrUsername", GrdrUsername)
                 userQuizDataSource.InsertParameters.Add("CustomerId", CustomerId)
                 userQuizDataSource.InsertParameters.Add("School", UserSchool)
                 userQuizDataSource.InsertParameters.Add("Campus", UserCampus)

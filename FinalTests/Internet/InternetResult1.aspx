@@ -62,9 +62,9 @@
                     </asp:SqlDataSource>                
                 </td>
             </tr>
-          <%--  <tr>
+          <tr>
                 <td style="height: 39px; font-size:12pt"><a href="InternetDefault.aspx">Return</a><br />
-                    <asp:FormView ID="FormView1" runat="server" DataSourceID="SqlDataSource2" 
+                <%--      <asp:FormView ID="FormView1" runat="server" DataSourceID="SqlDataSource2" 
                         EmptyDataText="No data to display" HeaderText="Class" Height="152px" 
                         Width="210px">
                         <EditItemTemplate>
@@ -148,9 +148,9 @@
                         <SelectParameters>
                             <asp:SessionParameter Name="EnrollUser" SessionField="username" Type="String" />
                         </SelectParameters>
-                    </asp:SqlDataSource>
+                    </asp:SqlDataSource>--%>         
                 </td>
-            </tr>  --%>                                  
+            </tr>                           
         </table>
 
 </asp:Content>

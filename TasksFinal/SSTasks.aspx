@@ -94,7 +94,7 @@
                         <br />
                         <br />
                         <br />
-                    <asp:FormView ID="FormView1" runat="server" DataSourceID="SqlDataSource1" 
+                   <%-- <asp:FormView ID="FormView1" runat="server" DataSourceID="SqlDataSource1" 
                     HeaderText="Class" Width="263px">
                     <EditItemTemplate>
                         EnrollUser:
@@ -170,7 +170,7 @@
                             Text='<%# Bind("EnrollSchoolId") %>' />
                         <br />
                     </ItemTemplate>
-                </asp:FormView>
+                </asp:FormView>--%>
                     </td>
                     <td style="vertical-align: middle; height: 182px; text-align: left" align="left"
                         colspan="2" valign="top">

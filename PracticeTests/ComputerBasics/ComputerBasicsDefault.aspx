@@ -43,8 +43,8 @@
                     PageSize="6" Font-Size="12pt">
                     <RowStyle CssClass="" HorizontalAlign="Left" VerticalAlign="Top" />
                     <Columns>
-                        <asp:BoundField DataField="DateTimeComplete" DataFormatString="{0:d}" HeaderText="Date"
-                            SortExpression="DateTimeComplete" ReadOnly="False">
+                        <asp:BoundField DataField="DateTaken" DataFormatString="{0:d}" HeaderText="DateTaken"
+                            SortExpression="DateTaken" ReadOnly="False">
                             <FooterStyle Width="150px" />
                             <HeaderStyle Width="150px" />
                             <ItemStyle HorizontalAlign="Left" Width="150px" />
@@ -62,7 +62,7 @@
                 <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
                     
                     
-                    SelectCommand="SELECT Quiz.Title, UserQuiz.DateTimeComplete, UserQuiz.Score FROM UserQuiz INNER JOIN Quiz ON UserQuiz.QuizId = Quiz.QuizId WHERE (UserQuiz.UserName = @UserName) AND (Quiz.Title = 'Practice Computer Basics Quiz') ORDER BY UserQuiz.DateTimeComplete DESC">
+                    SelectCommand="SELECT Quiz.Title, UserQuiz.DateTaken, UserQuiz.Score FROM UserQuiz INNER JOIN Quiz ON UserQuiz.QuizId = Quiz.QuizId WHERE (UserQuiz.UserName = @UserName) AND (Quiz.Title = 'Practice Computer Basics Quiz') ORDER BY UserQuiz.DateTaken DESC">
                     <SelectParameters>
                         <asp:SessionParameter Name="UserName" SessionField="UserName" />
                     </SelectParameters>

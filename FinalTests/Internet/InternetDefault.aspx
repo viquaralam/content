@@ -65,7 +65,7 @@
                     
                     SelectCommand="SELECT Quiz.Title, UserQuiz.DateTimeComplete, UserQuiz.DateTaken, UserQuiz.Score, UserQuiz.Grade 
                                     FROM UserQuiz INNER JOIN Quiz ON UserQuiz.QuizID = Quiz.QuizID 
-                                    WHERE (UserQuiz.UserName = @UserName) and (Quiz.Title = 'Internet Final') ORDER BY UserQuiz.DateTaken DESC, UserQuiz.DateTimeComplete DESC">
+                                    WHERE (UserQuiz.UserName = @UserName) and (Quiz.Title = 'Internet Final') ORDER BY UserQuiz.DateTimeComplete DESC, UserQuiz.DateTaken DESC">
                     <SelectParameters>
                         <asp:SessionParameter Name="UserName" SessionField="UserName" />
                     </SelectParameters>

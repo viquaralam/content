@@ -1,7 +1,7 @@
 
 
 
-<%@ Page Title="Certification Exams" MasterPageFile="~/MasterPageCert.master" %>
+<%@ Page Title="Certification Exams" MasterPageFile="~/MasterPageCert.master" CodeFile="certification.aspx.vb" Inherits="certification"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 

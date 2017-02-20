@@ -22,4 +22,7 @@ Partial Class TestingCenter_Internet_FinalDefault
         'End If
     End Sub
 
+    Private Sub TestingCenter_Internet_FinalDefault_PreInit(sender As Object, e As EventArgs) Handles Me.PreInit
+        Session.Add("UserName", User.Identity.Name)
+    End Sub
 End Class

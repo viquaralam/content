@@ -44,8 +44,8 @@
                     PageSize="6">
                     <RowStyle CssClass="generaltext" />
                     <Columns>
-                        <asp:BoundField DataField="DateTimeComplete" DataFormatString="{0:d}" HeaderText="Completed"
-                            SortExpression="DateTimeComplete">
+                        <asp:BoundField DataField="DateTaken" DataFormatString="{0:d}" HeaderText="Taken"
+                            SortExpression="DateTaken">
                             <FooterStyle Width="150px" />
                             <HeaderStyle Width="150px" />
                             <ItemStyle HorizontalAlign="Center" Width="150px" />
@@ -60,7 +60,7 @@
                 </asp:GridView>
                 <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
                     
-                    SelectCommand="SELECT Quiz.Title, UserQuiz.DateTimeComplete, UserQuiz.Score FROM UserQuiz INNER JOIN Quiz ON UserQuiz.QuizID = Quiz.QuizID WHERE (UserQuiz.UserName = @UserName) and (Quiz.Title = 'Practice Internet Quiz') ORDER BY UserQuiz.DateTimeComplete DESC">
+                    SelectCommand="SELECT Quiz.Title, UserQuiz.DateTaken, UserQuiz.Score FROM UserQuiz INNER JOIN Quiz ON UserQuiz.QuizID = Quiz.QuizID WHERE (UserQuiz.UserName = @UserName) and (Quiz.Title = 'Practice Internet Quiz') ORDER BY UserQuiz.DateTaken DESC">
                     <SelectParameters>
                         <asp:SessionParameter Name="UserName" SessionField="UserName" />
                     </SelectParameters>

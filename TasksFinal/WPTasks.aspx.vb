@@ -31,7 +31,7 @@ Partial Class TestingCenter_FinalTests_WPTasks
                 'Label3.Text = "You have and ungraded Word Processing task. Try again later"
                 'Response.Redirect("~/Login.aspx")
                 Freeze = 0
-                'Ptr = 0
+                Ptr = 0
                 fileName = ""
                 Start = ""
 
@@ -89,7 +89,77 @@ Partial Class TestingCenter_FinalTests_WPTasks
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
+        Dim usersInfoConnection As SqlConnection
+        Dim SqlCommand As SqlCommand
+        Dim sdr As SqlDataReader
+        Dim CustomerId, UserSchool, UserCampus, UserClass As String
+        Dim GraderId, GrdrUsername As String
+        If Page.IsPostBack = False Then
+            Try
+                usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
+                usersInfoConnection.Open()
+                SqlCommand = New SqlCommand()
+                SqlCommand.CommandType = CommandType.Text
+                SqlCommand.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name.ToString
+                SqlCommand.Connection = usersInfoConnection
+                SqlCommand.CommandText = "SELECT EnrollCustomerId, EnrollSchoolId, EnrollCampus, EnrollClass FROM Enrollment Where EnrollUser = @UserName"
+                sdr = SqlCommand.ExecuteReader()
+                While sdr.Read()
+                    CustomerId = sdr(0).ToString()
+                    UserSchool = sdr(1).ToString()
+                    UserCampus = sdr(2).ToString()
+                    UserClass = sdr(3).ToString()
+                End While
+
+                If sdr.IsClosed = False Then
+                    sdr.Close()
+                End If
+
+
+                If CustomerId Is Nothing Then
+                    CustomerId = -1
+                End If
+                If UserSchool Is Nothing Then
+                    UserSchool = -1
+                End If
+                If UserCampus Is Nothing Then
+                    UserCampus = -1
+                End If
+                If UserClass Is Nothing Then
+                    UserClass = -1
+                End If
+
+                SqlCommand = New SqlCommand()
+                SqlCommand.CommandType = CommandType.Text
+                SqlCommand.Parameters.Add("GrdrCustomerId", SqlDbType.Int).Value = CustomerId
+                SqlCommand.Parameters.Add("GrdrSchoolId", SqlDbType.Int).Value = UserSchool
+                SqlCommand.Parameters.Add("GrdrCampusId", SqlDbType.Int).Value = UserCampus
+                SqlCommand.Parameters.Add("GrdrClassId", SqlDbType.Int).Value = UserClass
+                SqlCommand.Connection = usersInfoConnection
+                SqlCommand.CommandText = "SELECT GrdrId, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
+                sdr = SqlCommand.ExecuteReader()
+                While sdr.Read()
+                    GraderId = sdr(0).ToString()
+                    GrdrUsername = sdr(1).ToString()
+                End While
+
+                If String.IsNullOrEmpty(GraderId) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
+                    Session("ShowPopupOnCertification") = True
+
+
+                    Response.Redirect("~\Certification.aspx", False)
+                    Return
+                End If
+
+            Catch ex As Exception
+
+
+
+            End Try
+        End If
+
         If Ptr = 0 Then
+
             If Page.IsPostBack = False Then
                 Dim n As Integer = New Random().Next(1, 20)
                 Dim X As String
@@ -148,67 +218,44 @@ Partial Class TestingCenter_FinalTests_WPTasks
 
 
                     Dim rowsAffected1 As String
-                    Dim usersInfoConnection As SqlConnection
-                    Dim SqlCommand As SqlCommand
-                    Dim sdr As SqlDataReader
-                    Dim CustomerId, UserSchool, UserCampus, UserClass As String
-
-                    Try
-                        usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
-                        usersInfoConnection.Open()
-                        SqlCommand = New SqlCommand()
-                        SqlCommand.CommandType = CommandType.Text
-                        SqlCommand.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name.ToString
-                        SqlCommand.Connection = usersInfoConnection
-                        SqlCommand.CommandText = "SELECT CustomerId, UserSchool, UserCampus, UserClass FROM Users Where UserName = @UserName"
-                        sdr = SqlCommand.ExecuteReader()
-                        While sdr.Read()
-                            CustomerId = sdr(0).ToString()
-                            UserSchool = sdr(1).ToString()
-                            UserCampus = sdr(2).ToString()
-                            UserClass = sdr(3).ToString()
-                        End While
 
 
-                    Catch
 
-
-                    End Try
 
 
                     Dim userQuizDataSource1 As SqlDataSource = New SqlDataSource()
                     Dim userEnrollDataSource3 As SqlDataSource = New SqlDataSource()
-                    Dim dr As System.Data.DataRowView
+                    'Dim dr As System.Data.DataRowView
 
-                    FormView1.DataBind()
-                    dr = CType(FormView1.DataItem, System.Data.DataRowView)
+                    'FormView1.DataBind()
+                    'dr = CType(FormView1.DataItem, System.Data.DataRowView)
 
                     userQuizDataSource1.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                    userQuizDataSource1.InsertCommand = "INSERT INTO UserQuiz (QuizId, DateTimeComplete, Score, UserName, Questions, CorrectAns, CustomerId, School, Campus, Class, Grader, GradeDesc, Type, Grade, DateTaken, CheckHash) VALUES (@QuizId, @DateTimeComplete, @Score, @UserName, @Questions, @CorrectAns, @CustomerId, @School, @Campus, @Class, @Grader, @GradeDesc, 'MC', @Grade, @DateTaken, @CheckHash)"
+                    userQuizDataSource1.InsertCommand = "INSERT INTO UserQuiz (QuizId, DateTimeComplete, Score, UserName, Questions, CorrectAns, CustomerId, School, Campus, Class, Grader, GraderUserName, GradeDesc, Type, Grade, DateTaken, CheckHash) VALUES (@QuizId, @DateTimeComplete, @Score, @UserName, @Questions, @CorrectAns, @CustomerId, @School, @Campus, @Class, @Grader, @GraderUserName, @GradeDesc, 'WP Task', @Grade, @DateTaken, @CheckHash)"
 
-                    Dim Cell As String
-                    If dr Is Nothing Then
-                        Cell = Nothing
-                    Else
-                        Cell = dr("EnrollSchoolId").ToString()
-                    End If
+                    'Dim Cell As String
+                    'If dr Is Nothing Then
+                    '    Cell = Nothing
+                    'Else
+                    '    Cell = dr("EnrollSchoolId").ToString()
+                    'End If
 
                     userQuizDataSource1.InsertParameters.Add("GradeDesc", "wp/didlWPTask" + X)
                     userQuizDataSource1.InsertParameters.Add("Questions", 0)
                     userQuizDataSource1.InsertParameters.Add("School", UserSchool)
 
-                    If dr Is Nothing Then
-                        Cell = Nothing
-                    Else
-                        Cell = dr("EnrollCampus").ToString()
-                    End If
+                    'If dr Is Nothing Then
+                    '    Cell = Nothing
+                    'Else
+                    '    Cell = dr("EnrollCampus").ToString()
+                    'End If
                     userQuizDataSource1.InsertParameters.Add("Campus", UserCampus)
 
-                    If dr Is Nothing Then
-                        Cell = Nothing
-                    Else
-                        Cell = dr("EnrollClass").ToString()
-                    End If
+                    'If dr Is Nothing Then
+                    '    Cell = Nothing
+                    'Else
+                    '    Cell = dr("EnrollClass").ToString()
+                    'End If
 
                     userQuizDataSource1.InsertParameters.Add("Class", UserClass)
 
@@ -221,9 +268,10 @@ Partial Class TestingCenter_FinalTests_WPTasks
                     userQuizDataSource1.InsertParameters.Add("DateTaken", DateTime.Now.ToString)
                     userQuizDataSource1.InsertParameters.Add("DateTimeComplete", "")
                     userQuizDataSource1.InsertParameters.Add("UserName", User.Identity.Name.ToString)
-                    userQuizDataSource1.InsertParameters.Add("QuizId", 29)
-                    userQuizDataSource1.InsertParameters.Add("Grader", Int(0))
-                    userQuizDataSource1.InsertParameters.Add("Type", "MC")
+                    userQuizDataSource1.InsertParameters.Add("QuizId", 32)
+                    userQuizDataSource1.InsertParameters.Add("Grader", GraderId)
+                    userQuizDataSource1.InsertParameters.Add("GraderUserName", GrdrUsername)
+                    userQuizDataSource1.InsertParameters.Add("Type", "WP Task")
                     userQuizDataSource1.InsertParameters.Add("Score", "")
                     userQuizDataSource1.InsertParameters.Add("Grade", "Ungraded")
                     userQuizDataSource1.InsertParameters.Add("CorrectAns", "")

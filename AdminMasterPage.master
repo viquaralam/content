@@ -1,4 +1,4 @@
-<%@ Master Language="VB" CodeFile="AdminMasterPage.master.vb" Inherits="AdminMasterPage" %>
+<%@ Master Language="VB" CodeFile="AdminMasterPage.master.vb" Inherits="MasterPage" %>
 
 <!DOCTYPE html >
 
@@ -117,7 +117,7 @@
         </tr>
         </table>
         <div class="footer" style="text-align:center;">
-            <a href="../CopyRight.aspx" target="_blank" style="border-color:White;color:White; vertical-align: middle; text-align: center;">?Empowerment Concepts, LLC. - All Rights Reserved</a></div>
+            <a href="../CopyRight.aspx" target="_blank" style="border-color:White;color:White; vertical-align: middle; text-align: center;">© Empowerment Concepts, LLC. - All Rights Reserved</a></div>
         
     </form>
     

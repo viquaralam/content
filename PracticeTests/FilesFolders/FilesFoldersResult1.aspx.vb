@@ -65,10 +65,9 @@ Partial Class Practice_FilesFolders_TestResult
             Catch
             End Try
             userQuizDataSource.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-            userQuizDataSource.InsertCommand = "INSERT INTO [UserQuiz] ([QuizID], [DateTimeComplete], [Score], [UserName], [Questions], [Correctans], CustomerId, School, Campus, Class, DateTaken) VALUES (@QuizID, @DateTimeComplete, @Score, @UserName, @Questions, @Correctans, @CustomerId, @School, @Campus, @Class, @DateTaken)"
+            userQuizDataSource.InsertCommand = "INSERT INTO [UserQuiz] ([QuizID], [Score], [UserName], [Questions], [Correctans], CustomerId, School, Campus, Class, DateTaken) VALUES (@QuizID, @Score, @UserName, @Questions, @Correctans, @CustomerId, @School, @Campus, @Class, @DateTaken)"
 
             userQuizDataSource.InsertParameters.Add("QuizID", Session("QuizID").ToString())
-            userQuizDataSource.InsertParameters.Add("DateTimeComplete", DateTime.Now.ToString())
             userQuizDataSource.InsertParameters.Add("Score", CInt(score))
             userQuizDataSource.InsertParameters.Add("UserName", User.Identity.Name)
             userQuizDataSource.InsertParameters.Add("Questions", questions.ToString)

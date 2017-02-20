@@ -54,7 +54,7 @@ Partial Class TestingCenter_FinalTests_FMTasks
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-        
+
         If Ptr = 0 Then
             If Page.IsPostBack = False Then
                 Dim n As Integer = New Random().Next(1, 20)
@@ -110,14 +110,15 @@ Partial Class TestingCenter_FinalTests_FMTasks
                 Dim userQuizDataSource1 As SqlDataSource = New SqlDataSource()
                 Dim userEnrollDataSource3 As SqlDataSource = New SqlDataSource()
                 Dim dr As System.Data.DataRowView
-                
-                FormView1.DataBind()
-                dr = CType(FormView1.DataItem, System.Data.DataRowView)
+
+                'FormView1.DataBind()
+                'dr = CType(FormView1.DataItem, System.Data.DataRowView)
 
                 Dim usersInfoConnection As SqlConnection
                 Dim SqlCommand As SqlCommand
                 Dim sdr As SqlDataReader
                 Dim CustomerId, UserSchool, UserCampus, UserClass As String
+                Dim GraderId, GrdrUsername As String
 
                 Try
                     usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
@@ -126,7 +127,7 @@ Partial Class TestingCenter_FinalTests_FMTasks
                     SqlCommand.CommandType = CommandType.Text
                     SqlCommand.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name.ToString
                     SqlCommand.Connection = usersInfoConnection
-                    SqlCommand.CommandText = "SELECT CustomerId, UserSchool, UserCampus, UserClass FROM Users Where UserName = @UserName"
+                    SqlCommand.CommandText = "SELECT EnrollCustomerId, EnrollSchoolId, EnrollCampus, EnrollClass FROM Enrollment Where EnrollUser = @UserName"
                     sdr = SqlCommand.ExecuteReader()
                     While sdr.Read()
                         CustomerId = sdr(0).ToString()
@@ -135,12 +136,51 @@ Partial Class TestingCenter_FinalTests_FMTasks
                         UserClass = sdr(3).ToString()
                     End While
 
-                Catch
+                    If sdr.IsClosed = False Then
+                        sdr.Close()
+                    End If
+                    If CustomerId Is Nothing Then
+                        CustomerId = -1
+                    End If
+                    If UserSchool Is Nothing Then
+                        UserSchool = -1
+                    End If
+                    If UserCampus Is Nothing Then
+                        UserCampus = -1
+                    End If
+                    If UserClass Is Nothing Then
+                        UserClass = -1
+                    End If
+                    SqlCommand = New SqlCommand()
+                    SqlCommand.CommandType = CommandType.Text
+                    SqlCommand.Parameters.Add("GrdrCustomerId", SqlDbType.Int).Value = CustomerId
+                    SqlCommand.Parameters.Add("GrdrSchoolId", SqlDbType.Int).Value = UserSchool
+                    SqlCommand.Parameters.Add("GrdrCampusId", SqlDbType.Int).Value = UserCampus
+                    SqlCommand.Parameters.Add("GrdrClassId", SqlDbType.Int).Value = UserClass
+                    SqlCommand.Connection = usersInfoConnection
+                    SqlCommand.CommandText = "SELECT GrdrId, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
+                    sdr = SqlCommand.ExecuteReader()
+                    While sdr.Read()
+                        GraderId = sdr(0).ToString()
+                        GrdrUsername = sdr(1).ToString()
+                    End While
+
+                    If String.IsNullOrEmpty(GraderId) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
+                        Session("ShowPopupOnCertification") = True
+
+                        Response.Redirect("~\Certification.aspx")
+                        Return
+                    End If
+
+                Catch ex As Exception
+
+
+
                 End Try
 
                 'Dim rowsAffected
                 userQuizDataSource1.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                userQuizDataSource1.InsertCommand = "INSERT INTO UserQuiz (QuizId, DateTimeComplete, Score, UserName, Questions, CorrectAns, CustomerId, School, Campus, Class, Grader, GradeDesc, Type, Grade, DateTaken, CheckHash) VALUES (@QuizId, @DateTimeComplete, @Score, @UserName, @Questions, @CorrectAns, @CustomerId, @School, @Campus, @Class, @Grader, @GradeDesc, @Type, @Grade, @DateTaken, @CheckHash)"
+                userQuizDataSource1.InsertCommand = "INSERT INTO UserQuiz (QuizId, DateTimeComplete, Score, UserName, Questions, CorrectAns, CustomerId, School, Campus, Class, Grader, GraderUserName, GradeDesc, Type, Grade, DateTaken, CheckHash) VALUES (@QuizId, @DateTimeComplete, @Score, @UserName, @Questions, @CorrectAns, @CustomerId, @School, @Campus, @Class, @Grader, @GraderUserName, @GradeDesc, @Type, @Grade, @DateTaken, @CheckHash)"
 
                 Dim Cell As String
                 'Cell = (If(dr Is Nothing, Nothing, dr("EnrollCampus").ToString))
@@ -180,9 +220,10 @@ Partial Class TestingCenter_FinalTests_FMTasks
                 userQuizDataSource1.InsertParameters.Add("DateTaken", DateTime.Now.ToString)
                 userQuizDataSource1.InsertParameters.Add("DateTimeComplete", "")
                 userQuizDataSource1.InsertParameters.Add("UserName", User.Identity.Name.ToString)
-                userQuizDataSource1.InsertParameters.Add("QuizID", 28)
-                userQuizDataSource1.InsertParameters.Add("Grader", Int(1))
-                userQuizDataSource1.InsertParameters.Add("Type", "MC")
+                userQuizDataSource1.InsertParameters.Add("QuizID", 25)
+                userQuizDataSource1.InsertParameters.Add("Grader", GraderId)
+                userQuizDataSource1.InsertParameters.Add("GraderUserName", GrdrUsername)
+                userQuizDataSource1.InsertParameters.Add("Type", "FF Task")
                 userQuizDataSource1.InsertParameters.Add("Score", "")
                 userQuizDataSource1.InsertParameters.Add("Grade", "Ungraded")
                 userQuizDataSource1.InsertParameters.Add("CorrectAns", "")
@@ -191,7 +232,7 @@ Partial Class TestingCenter_FinalTests_FMTasks
 
 
                 Dim conn As SqlConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
-                Dim Command As SqlCommand = New SqlCommand("SELECT IDENT_CURRENT ('UserQuiz') AS Current_Identity")
+                Dim Command As SqlCommand = New SqlCommand("Select IDENT_CURRENT ('UserQuiz') AS Current_Identity")
                 Command.Connection = conn
                 conn.Open()
                 Dim Identity As Decimal = DirectCast(Command.ExecuteScalar(), Decimal)
