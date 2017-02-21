@@ -143,6 +143,15 @@ Partial Class TestingCenter_ComputerBasics_FinalResult
                     "into our database.  Therefore the results from this quiz " & _
                     "will not be displayed on the list on the main menu."
                 End If
+                'Update users table for always incrementing TimesEssential field and updating TestEssential
+                'to current datetime only when score is more than 90
+                SqlCommand = New SqlCommand()
+                SqlCommand.CommandType = CommandType.Text
+                SqlCommand.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name
+                SqlCommand.Parameters.Add("Score", SqlDbType.Int).Value = score
+                SqlCommand.Connection = usersInfoConnection
+                SqlCommand.CommandText = "UPDATE Users SET TimesCB = ISNULL(TimesCB,0) + 1, TestCB = (CASE WHEN @Score > 90  THEN GETDATE() ELSE TestCB END) WHERE UserName =  @UserName"
+                SqlCommand.ExecuteNonQuery()
 
             End If
 

@@ -252,6 +252,13 @@ Partial Class TestingCenter_FinalTests_SSTasks
                     Command.Connection = conn
                     conn.Open()
                     Dim Identity As Decimal = DirectCast(Command.ExecuteScalar(), Decimal)
+
+                    Command = New SqlCommand("UPDATE Users SET TimesSS = ISNULL(TimesSS, 0) + 1 WHERE UserName = @UserName")
+                    Command.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name
+                    Command.Connection = conn
+                    Command.ExecuteNonQuery()
+
+                    'Close the connection now
                     conn.Close()
 
                     Dim rowsAffected2 As String

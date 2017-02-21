@@ -87,8 +87,8 @@
                                         <br />
                                         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                             <ContentTemplate>
-                                                <asp:GridView ID="GridView2" runat="server" AllowPaging="True" AutoGenerateColumns="False"
-                                                   HorizontalAlign="Left" Width="700px">
+                                                <asp:GridView ID="GridView2" runat="server" AllowPaging="true" AllowSorting="true" AutoGenerateColumns="False" DataKeyNames="UserQuizId"
+                                                   HorizontalAlign="Left" Width="700px" >
                                                     <RowStyle Width="200px" />
                                                     <Columns>
                                                         <asp:BoundField DataField="GradeDesc" HeaderText="Task Description" SortExpression="Task Description" />
@@ -129,7 +129,7 @@
                                         </div>
                                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                                             <ContentTemplate>
-                                                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
+                                                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False"  OnPageIndexChanging="GridView1_PageIndexChanging"
                                                     Width="700px" AllowPaging="True" AllowSorting="True" Height="181px" Font-Size="10pt"
                                                     BorderStyle="Solid" EnableTheming="False" GridLines="Vertical" HorizontalAlign="Left"
                                                     CaptionAlign="Left">

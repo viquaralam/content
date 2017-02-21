@@ -122,10 +122,21 @@ Partial Class TestingCenter_FinalTests_FinalResult
                 If rowsAffected = 0 Then
                     ' Let's just notify that the insertion didn't 
                     ' work, but let's continue on ...
-                    errorLabel.Text = "There was a problem saving your quiz results " & _
-                    "into our database.  Therefore the results from this quiz " & _
+                    errorLabel.Text = "There was a problem saving your quiz results " & vbCrLf & _
+                    "into our database.  Therefore the results from this quiz " & vbCrLf & _
                     "will not be displayed on the list on the main menu."
                 End If
+
+                'Update users table for always incrementing TimesEssential field and updating TestEssential
+                'to current datetime only when score is more than 90
+                SqlCommand = New SqlCommand()
+                SqlCommand.CommandType = CommandType.Text
+                SqlCommand.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name
+                SqlCommand.Parameters.Add("Score", SqlDbType.Int).Value = score
+                SqlCommand.Connection = usersInfoConnection
+                SqlCommand.CommandText = "UPDATE Users SET TimesEssential = ISNULL(TimesEssential,0) + 1,  TestEssential = (CASE WHEN @Score > 90  THEN GETDATE() ELSE TestEssential END) WHERE UserName =  @UserName"
+                SqlCommand.ExecuteNonQuery()
+
 
             End If
 

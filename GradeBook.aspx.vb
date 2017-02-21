@@ -182,4 +182,13 @@ Partial Class GradeBook
 
     End Function
 
+    Protected Sub GridView2_PageIndexChanging(sender As Object, e As GridViewPageEventArgs) Handles GridView2.PageIndexChanging
+        GridView2.PageIndex = e.NewPageIndex
+        TaskFeedback()
+    End Sub
+    Protected Sub GridView1_PageIndexChanging(sender As Object, e As GridViewPageEventArgs)
+        GridView1.PageIndex = e.NewPageIndex
+        MultipleChoiceTestHistory()
+    End Sub
+   
 End Class
