@@ -89,7 +89,7 @@ Partial Class TestingCenter_FinalTests_FinalResult
                         Return
                     End If
 
-                Catch
+                Catch ex As Exception
                 End Try
 
                 Dim userQuizDataSource As SqlDataSource = New SqlDataSource()
