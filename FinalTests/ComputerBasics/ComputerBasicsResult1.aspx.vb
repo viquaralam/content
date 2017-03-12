@@ -52,7 +52,7 @@ Partial Class TestingCenter_ComputerBasics_FinalResult
                 Dim SqlCommand As SqlCommand
                 Dim sdr As SqlDataReader
                 Dim CustomerId, UserSchool, UserCampus, UserClass As String
-                Dim GraderId, GrdrUsername As String
+                Dim ClassNumber, GrdrUsername As String
 
                 Try
                     usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
@@ -95,14 +95,14 @@ Partial Class TestingCenter_ComputerBasics_FinalResult
                     SqlCommand.Parameters.Add("GrdrCampusId", SqlDbType.Int).Value = UserCampus
                     SqlCommand.Parameters.Add("GrdrClassId", SqlDbType.Int).Value = UserClass
                     SqlCommand.Connection = usersInfoConnection
-                    SqlCommand.CommandText = "SELECT GrdrId, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
+                    SqlCommand.CommandText = "SELECT ClassNum, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
                     sdr = SqlCommand.ExecuteReader()
                     While sdr.Read()
-                        GraderId = sdr(0).ToString()
+                        ClassNumber = sdr(0).ToString()
                         GrdrUsername = sdr(1).ToString()
                     End While
 
-                    If String.IsNullOrEmpty(GraderId) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
+                    If String.IsNullOrEmpty(ClassNumber) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
                         Session("ShowPopupOnCertification") = True
                         Response.Redirect("~\Certification.aspx")
                         Return
@@ -112,7 +112,7 @@ Partial Class TestingCenter_ComputerBasics_FinalResult
                 Catch
                 End Try
                 userQuizDataSource.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                userQuizDataSource.InsertCommand = "INSERT INTO [UserQuiz] ([QuizID], Grader,GraderUserName, [DateTimeComplete],[School], [Campus], [Class], [CustomerId],  [Score], [UserName], [Questions], [Correctans], [DateTaken], [Type], [Grade]) VALUES (@QuizID, @GraderId, @GrdrUsername, @DateTimeComplete, @School, @Campus, @Class, @CustomerId, @Score, @UserName, @Questions, @Correctans, @DateTaken, @Type, @Grade)"
+                userQuizDataSource.InsertCommand = "INSERT INTO [UserQuiz] ([QuizID], Grader,GraderUserName, [DateTimeComplete],[School], [Campus], [Class], [CustomerId],  [Score], [UserName], [Questions], [Correctans], [DateTaken], [Type], [Grade]) VALUES (@QuizID, @ClassNumber, @GrdrUsername, @DateTimeComplete, @School, @Campus, @Class, @CustomerId, @Score, @UserName, @Questions, @Correctans, @DateTaken, @Type, @Grade)"
 
                 userQuizDataSource.InsertParameters.Add("QuizID", Session("QuizID").ToString())
                 If score >= 90 Then
@@ -122,7 +122,7 @@ Partial Class TestingCenter_ComputerBasics_FinalResult
                     userQuizDataSource.InsertParameters.Add("DateTimeComplete", "")
                     userQuizDataSource.InsertParameters.Add("Grade", "Fail")
                 End If
-                userQuizDataSource.InsertParameters.Add("GraderId", GraderId)
+                userQuizDataSource.InsertParameters.Add("ClassNumber", ClassNumber)
                 userQuizDataSource.InsertParameters.Add("GrdrUsername", GrdrUsername)
                 userQuizDataSource.InsertParameters.Add("CustomerId", CustomerId)
                 userQuizDataSource.InsertParameters.Add("School", UserSchool)

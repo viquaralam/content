@@ -1,7 +1,7 @@
 
 Imports System.Windows.Forms
 
-Partial Class TestingCenter_FinalTests_FinalResult
+Partial Class TestingCenter_ComputerBasics_FinalResult
     Inherits System.Web.UI.Page
     Shared Ptr As Int16 = 0
     Protected Sub resultGrid_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles resultGrid.SelectedIndexChanged
@@ -18,7 +18,7 @@ Partial Class TestingCenter_FinalTests_FinalResult
             Dim al As ArrayList = CType(Session("AnswerList"), ArrayList)
 
             If al Is Nothing Then
-                Response.Redirect("BasicFinalDefault.aspx")
+                Response.Redirect("ComputerBasicsDefault.aspx")
             End If
 
             resultGrid.DataSource = al
@@ -38,17 +38,21 @@ Partial Class TestingCenter_FinalTests_FinalResult
                         correct += 1
                     End If
                 Next
-                Dim dr As System.Data.DataRowView
+
+                Dim score As Double = (correct / questions) * 100
+                'Dim dr As System.Data.DataRowView
 
                 'FormView1.DataBind()
                 'dr = CType(FormView1.DataItem, System.Data.DataRowView)
-                Dim score As Double = (correct / questions) * 100
+                Dim userQuizDataSource As SqlDataSource = New SqlDataSource()
+                Dim rowsAffected
+
 
                 Dim usersInfoConnection As SqlConnection
                 Dim SqlCommand As SqlCommand
                 Dim sdr As SqlDataReader
                 Dim CustomerId, UserSchool, UserCampus, UserClass As String
-                Dim ClassNumber, GrdrUsername As String
+                Dim GraderId, GrdrUsername As String
 
                 Try
                     usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
@@ -69,6 +73,21 @@ Partial Class TestingCenter_FinalTests_FinalResult
                     If sdr.IsClosed = False Then
                         sdr.Close()
                     End If
+
+
+                    If CustomerId Is Nothing Then
+                        CustomerId = -1
+                    End If
+                    If UserSchool Is Nothing Then
+                        UserSchool = -1
+                    End If
+                    If UserCampus Is Nothing Then
+                        UserCampus = -1
+                    End If
+                    If UserClass Is Nothing Then
+                        UserClass = -1
+                    End If
+
                     SqlCommand = New SqlCommand()
                     SqlCommand.CommandType = CommandType.Text
                     SqlCommand.Parameters.Add("GrdrCustomerId", SqlDbType.Int).Value = CustomerId
@@ -76,26 +95,24 @@ Partial Class TestingCenter_FinalTests_FinalResult
                     SqlCommand.Parameters.Add("GrdrCampusId", SqlDbType.Int).Value = UserCampus
                     SqlCommand.Parameters.Add("GrdrClassId", SqlDbType.Int).Value = UserClass
                     SqlCommand.Connection = usersInfoConnection
-                    SqlCommand.CommandText = "SELECT ClassNum, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
+                    SqlCommand.CommandText = "SELECT GrdrId, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
                     sdr = SqlCommand.ExecuteReader()
                     While sdr.Read()
-                        ClassNumber = sdr(0).ToString()
+                        GraderId = sdr(0).ToString()
                         GrdrUsername = sdr(1).ToString()
                     End While
 
-                    If String.IsNullOrEmpty(ClassNumber) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
+                    If String.IsNullOrEmpty(GraderId) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
                         Session("ShowPopupOnCertification") = True
                         Response.Redirect("~\Certification.aspx")
                         Return
                     End If
 
+
                 Catch
                 End Try
-
-                Dim userQuizDataSource As SqlDataSource = New SqlDataSource()
-                Dim rowsAffected
                 userQuizDataSource.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                userQuizDataSource.InsertCommand = "INSERT INTO [UserQuiz] ([QuizID], Grader,GraderUserName, [DateTimeComplete],[School], [Campus], [Class], [CustomerId],  [Score], [UserName], [Questions], [Correctans], [DateTaken], [Type], [Grade]) VALUES (@QuizID, @ClassNumber, @GrdrUsername, @DateTimeComplete, @School, @Campus, @Class, @CustomerId, @Score, @UserName, @Questions, @Correctans, @DateTaken, @Type, @Grade)"
+                userQuizDataSource.InsertCommand = "INSERT INTO [UserQuiz] ([QuizID], Grader,GraderUserName, [DateTimeComplete],[School], [Campus], [Class], [CustomerId],  [Score], [UserName], [Questions], [Correctans], [DateTaken], [Type], [Grade]) VALUES (@QuizID, @GraderId, @GrdrUsername, @DateTimeComplete, @School, @Campus, @Class, @CustomerId, @Score, @UserName, @Questions, @Correctans, @DateTaken, @Type, @Grade)"
 
                 userQuizDataSource.InsertParameters.Add("QuizID", Session("QuizID").ToString())
                 If score >= 90 Then
@@ -105,14 +122,14 @@ Partial Class TestingCenter_FinalTests_FinalResult
                     userQuizDataSource.InsertParameters.Add("DateTimeComplete", "")
                     userQuizDataSource.InsertParameters.Add("Grade", "Fail")
                 End If
-                userQuizDataSource.InsertParameters.Add("ClassNumber", ClassNumber)
+                userQuizDataSource.InsertParameters.Add("GraderId", GraderId)
                 userQuizDataSource.InsertParameters.Add("GrdrUsername", GrdrUsername)
                 userQuizDataSource.InsertParameters.Add("CustomerId", CustomerId)
                 userQuizDataSource.InsertParameters.Add("School", UserSchool)
                 userQuizDataSource.InsertParameters.Add("Campus", UserCampus)
                 userQuizDataSource.InsertParameters.Add("Class", UserClass)
                 userQuizDataSource.InsertParameters.Add("DateTaken", DateTime.Now.ToString())
-                userQuizDataSource.InsertParameters.Add("Type", "Final Test")
+                userQuizDataSource.InsertParameters.Add("Type", "CB Test")
                 userQuizDataSource.InsertParameters.Add("Score", CInt(score))
                 userQuizDataSource.InsertParameters.Add("UserName", User.Identity.Name)
                 userQuizDataSource.InsertParameters.Add("Questions", questions.ToString)
@@ -122,11 +139,10 @@ Partial Class TestingCenter_FinalTests_FinalResult
                 If rowsAffected = 0 Then
                     ' Let's just notify that the insertion didn't 
                     ' work, but let's continue on ...
-                    errorLabel.Text = "There was a problem saving your quiz results " & vbCrLf & _
-                    "into our database.  Therefore the results from this quiz " & vbCrLf & _
+                    errorLabel.Text = "There was a problem saving your quiz results " & _
+                    "into our database.  Therefore the results from this quiz " & _
                     "will not be displayed on the list on the main menu."
                 End If
-
                 'Update users table for always incrementing TimesEssential field and updating TestEssential
                 'to current datetime only when score is more than 90
                 SqlCommand = New SqlCommand()
@@ -134,9 +150,8 @@ Partial Class TestingCenter_FinalTests_FinalResult
                 SqlCommand.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name
                 SqlCommand.Parameters.Add("Score", SqlDbType.Int).Value = score
                 SqlCommand.Connection = usersInfoConnection
-                SqlCommand.CommandText = "UPDATE Users SET TimesEssential = ISNULL(TimesEssential,0) + 1,  TestEssential = (CASE WHEN @Score > 90  THEN GETDATE() ELSE TestEssential END) WHERE UserName =  @UserName"
+                SqlCommand.CommandText = "UPDATE Users SET TimesCB = ISNULL(TimesCB,0) + 1, TestCB = (CASE WHEN @Score > 90  THEN GETDATE() ELSE TestCB END) WHERE UserName =  @UserName"
                 SqlCommand.ExecuteNonQuery()
-
 
             End If
 
@@ -183,13 +198,17 @@ Partial Class TestingCenter_FinalTests_FinalResult
 
             'End Try
         End If
+
     End Sub
 
     Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
+
         Ptr = 0
+        'If Profile.IsAnonymous = True Then
 
+        '    Response.Redirect("~/Login.aspx")
+        'End If
     End Sub
-
     Protected Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Unload
         Ptr = 0
     End Sub
