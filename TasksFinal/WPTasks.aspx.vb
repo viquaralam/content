@@ -93,7 +93,7 @@ Partial Class TestingCenter_FinalTests_WPTasks
         Dim SqlCommand As SqlCommand
         Dim sdr As SqlDataReader
         Dim CustomerId, UserSchool, UserCampus, UserClass As String
-        Dim GraderId, GrdrUsername As String
+        Dim ClassNumber, GrdrUsername As String
         If Page.IsPostBack = False Then
             Try
                 usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
@@ -136,14 +136,14 @@ Partial Class TestingCenter_FinalTests_WPTasks
                 SqlCommand.Parameters.Add("GrdrCampusId", SqlDbType.Int).Value = UserCampus
                 SqlCommand.Parameters.Add("GrdrClassId", SqlDbType.Int).Value = UserClass
                 SqlCommand.Connection = usersInfoConnection
-                SqlCommand.CommandText = "SELECT GrdrId, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
+                SqlCommand.CommandText = "SELECT ClassNum, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
                 sdr = SqlCommand.ExecuteReader()
                 While sdr.Read()
-                    GraderId = sdr(0).ToString()
+                    ClassNumber = sdr(0).ToString()
                     GrdrUsername = sdr(1).ToString()
                 End While
 
-                If String.IsNullOrEmpty(GraderId) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
+                If String.IsNullOrEmpty(ClassNumber) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
                     Session("ShowPopupOnCertification") = True
 
 
@@ -269,7 +269,7 @@ Partial Class TestingCenter_FinalTests_WPTasks
                     userQuizDataSource1.InsertParameters.Add("DateTimeComplete", "")
                     userQuizDataSource1.InsertParameters.Add("UserName", User.Identity.Name.ToString)
                     userQuizDataSource1.InsertParameters.Add("QuizId", 32)
-                    userQuizDataSource1.InsertParameters.Add("Grader", GraderId)
+                    userQuizDataSource1.InsertParameters.Add("Grader", ClassNumber)
                     userQuizDataSource1.InsertParameters.Add("GraderUserName", GrdrUsername)
                     userQuizDataSource1.InsertParameters.Add("Type", "WP Task")
                     userQuizDataSource1.InsertParameters.Add("Score", "")

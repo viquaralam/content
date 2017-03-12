@@ -1,10 +1,11 @@
 
+Imports System.Collections
 Imports System.Windows.Forms
 
-Partial Class TestingCenter_Internet_FinalStart
+Partial Class TestingCenter_ComputerBasics_FinalStart
     Inherits System.Web.UI.Page
     Protected Sub startButton_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles startButton.Click
-        Response.Redirect("InternetTest.aspx")
+        Response.Redirect("ComputerBasicsTest.aspx")
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -24,7 +25,7 @@ Partial Class TestingCenter_Internet_FinalStart
         Dim SqlCommand As SqlCommand
         Dim sdr As SqlDataReader
         Dim CustomerId, UserSchool, UserCampus, UserClass As String
-        Dim ClassNumber, GrdrUsername As String
+        Dim GraderId, GrdrUsername As String
 
         Try
             usersInfoConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
@@ -67,16 +68,15 @@ Partial Class TestingCenter_Internet_FinalStart
             SqlCommand.Parameters.Add("GrdrCampusId", SqlDbType.Int).Value = UserCampus
             SqlCommand.Parameters.Add("GrdrClassId", SqlDbType.Int).Value = UserClass
             SqlCommand.Connection = usersInfoConnection
-            SqlCommand.CommandText = "SELECT ClassNum, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
+            SqlCommand.CommandText = "SELECT GrdrId, GrdrUserName FROM GraderAssign Where GrdrCustomerId = @GrdrCustomerId AND GrdrSchoolId = @GrdrSchoolId AND GrdrCampusId = @GrdrCampusId AND GrdrClassId = @GrdrClassId"
             sdr = SqlCommand.ExecuteReader()
             While sdr.Read()
-                ClassNumber = sdr(0).ToString()
+                GraderId = sdr(0).ToString()
                 GrdrUsername = sdr(1).ToString()
             End While
 
-            If String.IsNullOrEmpty(ClassNumber) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
+            If String.IsNullOrEmpty(GraderId) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
                 Session("ShowPopupOnCertification") = True
-
                 Response.Redirect("~\Certification.aspx")
                 Return
             End If
@@ -90,16 +90,10 @@ Partial Class TestingCenter_Internet_FinalStart
             Dim testID As Integer = Integer.Parse(Request.QueryString("testid"))
             Session.Add("QuizID", testID)
         Else
-            Response.Redirect("InternetDefault.aspx")
+            Response.Redirect("ComputerBasicsDefault.aspx")
         End If
 
     End Sub
 
-    Sub Page_PreInit(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
 
-        'If Profile.IsAnonymous = True Then
-
-        '    Response.Redirect("~/Login.aspx")
-        'End If
-    End Sub
 End Class
