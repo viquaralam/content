@@ -139,7 +139,7 @@
 													
 												<li><a href="#">Close Button</a></li>
 													
-														<p>Looks like an "X"ù on the top right corner of a window that when clicked, shuts the window down and removes it from the desktop and the taskbar</p>
+														<p>Looks like an "X"?on the top right corner of a window that when clicked, shuts the window down and removes it from the desktop and the taskbar</p>
 													
                                                 
                                                 <li><a href="#">Cloud Computing</a></li>
@@ -154,7 +154,7 @@
 														
                                                 <li><a href="#">Collated</a></li>
 													
-														<p>Ordering so that if you were printing two copies of a two page document, you could either print the two copies of page one first and then the two copies of page two, or you could print two "sets"ù of page one and two</p>
+														<p>Ordering so that if you were printing two copies of a two page document, you could either print the two copies of page one first and then the two copies of page two, or you could print two "sets"?of page one and two</p>
 													
 													<li><a href="#">Column Heading</a></li>
 													
@@ -175,7 +175,7 @@
 													
 													<li><a href="#">Cookie</a></li>
 													
-														<p>Information placed on your hard disk from a Web site concerning your personal use of the website in order for the web site to "remember"ù you or things about you such as previous purchases.</p>
+														<p>Information placed on your hard disk from a Web site concerning your personal use of the website in order for the web site to "remember"?you or things about you such as previous purchases.</p>
 													
 													<li><a href="#">Copy a File and a Folder</a></li>
 													
@@ -689,7 +689,7 @@
 													
 													<li><a href="#">Spyware</a></li>
 													
-														<p>Software that "spies"ù or collects information on a user's activity and report it back to the site that installed it</p>
+														<p>Software that "spies"?or collects information on a user's activity and report it back to the site that installed it</p>
 													
 													<li><a href="#">Start Button</a></li>
 													

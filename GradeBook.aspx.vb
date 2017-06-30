@@ -35,7 +35,7 @@ Partial Class GradeBook
                         "FROM  " & vbCrLf & _
                         "( " & vbCrLf & _
                         "Select   " & vbCrLf & _
-                        "Quiz.Title As Exam,  " & vbCrLf & _
+                        "Quiz.Title As Exam, Quiz.QuizId,  " & vbCrLf & _
                         "CASE When UserQuiz.Grade = 'Ungraded' THEN 0 " & vbCrLf & _
                         "When UserQuiz.Grade = 'Retake' THEN 1 " & vbCrLf & _
                         "WHEN UserQuiz.Grade = 'Fail' THEN 2 " & vbCrLf & _
@@ -48,7 +48,7 @@ Partial Class GradeBook
                         "From UserQuiz INNER Join Quiz On UserQuiz.QuizId = Quiz.QuizId " & vbCrLf & _
                         "WHERE ( UserQuiz.QuizId=27  Or  UserQuiz.QuizId=33 OR  UserQuiz.QuizId=11 Or  UserQuiz.QuizId=34 OR UserQuiz.QuizId=32 Or UserQuiz.QuizId=25)  " & vbCrLf & _
                         "And (UserQuiz.UserName = @UserName) " & vbCrLf & _
-                        "GROUP BY UserQuiz.UserName,  UserQuiz.QuizId, " & vbCrLf & _
+                        "GROUP BY UserQuiz.UserName,  Quiz.QuizId, " & vbCrLf & _
                         "CASE WHEN UserQuiz.Grade = 'Ungraded' THEN 0 " & vbCrLf & _
                         "WHEN UserQuiz.Grade = 'Retake' THEN 1 " & vbCrLf & _
                         "WHEN UserQuiz.Grade = 'Fail' THEN 2 " & vbCrLf & _
@@ -57,23 +57,8 @@ Partial Class GradeBook
                         "  Quiz.Title  " & vbCrLf & _
                         " " & vbCrLf & _
                         ") A " & vbCrLf & _
-                        "GROUP BY A.Exam " & vbCrLf & _
-                        "ORDER BY A.Exam ASC "
-        'Dim queryString As String = "Select Quiz.Title As Exam,  " & vbCrLf & _
-        '                                   " UserQuiz.Grade As 'Pass/Fail', " & vbCrLf & _
-        '                                    "MAX(UserQuiz.Score) As Grade, " & vbCrLf & _
-        '                                    "COUNT(UserQuiz.UserQuizId) AS Attempts, " & vbCrLf & _
-        '                                    "MAX(UserQuiz.DateTimeComplete) As 'Date Completed' " & vbCrLf & _
-        '                    "From UserQuiz INNER Join Quiz On UserQuiz.QuizId = Quiz.QuizId     " & vbCrLf & _
-        '                    "WHERE(UserQuiz.UserName = @UserName) and (UserQuiz.QuizId=27) " & vbCrLf & _
-        '                     "   Or(UserQuiz.UserName = @UserName) And (UserQuiz.QuizId=33) " & vbCrLf & _
-        '                      "  OR(UserQuiz.UserName = @UserName) and (UserQuiz.QuizId=11) " & vbCrLf & _
-        '                       " Or(UserQuiz.UserName = @UserName) And (UserQuiz.QuizId=34) " & vbCrLf & _
-        '                        "OR(UserQuiz.UserName = @UserName) and (UserQuiz.QuizId=32) " & vbCrLf & _
-        '                        "Or(UserQuiz.UserName = @UserName) And (UserQuiz.QuizId=25)   " & vbCrLf & _
-        '                    " GROUP BY UserQuiz.UserName,  UserQuiz.QuizId, " & vbCrLf & _
-        '                               " UserQuiz.Grade, Quiz.Title " & vbCrLf & _
-        '                    "ORDER BY UserQuiz.QuizId ASC"
+                        "GROUP BY A.Exam, A.QuizId " & vbCrLf & _
+                        "ORDER BY A.QuizId ASC "
 
         Dim UserName As SqlParameter = New SqlParameter()
         UserName.ParameterName = "UserName"

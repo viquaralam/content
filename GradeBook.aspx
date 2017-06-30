@@ -43,28 +43,7 @@
                                                         <asp:GridView ID="GridView3" runat="server" >
                                                             <HeaderStyle BackColor="#000066" ForeColor="White" />
                                                         </asp:GridView>
-                                                        <%--<asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
-                                                            SelectCommand="SELECT Quiz.Title AS Exam,
-                                                                                  UserQuiz.Grade As 'Pass/Fail',
-                                                                                  MAX(UserQuiz.Score) AS Grade,
-                                                                                  COUNT(UserQuiz.UserQuizId) AS Attempts,
-                                                                                  MAX(UserQuiz.DateTimeComplete) AS 'Date Completed'
-                                                                    FROM UserQuiz INNER JOIN Quiz ON UserQuiz.QuizId = Quiz.QuizId                                                                     
-                                                                    WHERE(UserQuiz.UserName = @UserName) and (UserQuiz.QuizId=27)
-                                                                       OR(UserQuiz.UserName = @UserName) and (UserQuiz.QuizId=33)
-                                                                       OR(UserQuiz.UserName = @UserName) and (UserQuiz.QuizId=11)
-                                                                       OR(UserQuiz.UserName = @UserName) and (UserQuiz.QuizId=34)
-                                                                       OR(UserQuiz.UserName = @UserName) and (UserQuiz.QuizId=32)
-                                                                       OR(UserQuiz.UserName = @UserName) and (UserQuiz.QuizId=25)  
-                                                                    GROUP BY UserQuiz.UserName,
-                                                                             UserQuiz.QuizId,
-                                                                             UserQuiz.Grade, 
-                                                                             Quiz.Title
-                                                                    ORDER BY UserQuiz.QuizId ASC">
-                                                            <SelectParameters>
-                                                                <asp:SessionParameter Name="UserName" SessionField="UserName" />
-                                                            </SelectParameters>
-                                                        </asp:SqlDataSource>--%>
+                                                        
                                                         <hr />
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
@@ -106,17 +85,6 @@
                                                         BorderStyle="Solid" Height="50px" Font-Bold="False" Font-Size="12pt" />
                                                     <AlternatingRowStyle BackColor="#CCFFFF" HorizontalAlign="Left" VerticalAlign="Middle" />
                                                 </asp:GridView>
-                                                <%--<asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
-                                                    SelectCommand="SELECT Quiz.Title, UserQuiz.DateTimeComplete, UserQuiz.Score, UserQuiz.Type, UserQuiz.GradeDesc, UserQuiz.UserName, UserQuiz.Grade, UserQuiz.Grader
-                                                                    FROM UserQuiz INNER JOIN Quiz ON UserQuiz.QuizId = Quiz.QuizId 
-                                                                    WHERE (UserQuiz.UserName = @UserName) AND (UserQuiz.QuizId=25)
-                                                                       OR (UserQuiz.UserName = @UserName) AND (UserQuiz.QuizId=32)
-                                                                       OR (UserQuiz.UserName = @UserName) AND (UserQuiz.QuizId=33) 
-                                                                    ORDER BY UserQuiz.DateTimeComplete DESC">
-                                                    <SelectParameters>
-                                                        <asp:SessionParameter Name="UserName" SessionField="UserName" />
-                                                    </SelectParameters>
-                                                </asp:SqlDataSource>--%>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
                                         <br />
@@ -162,17 +130,6 @@
                                 <div class="row">
                                     <div class="twelve columns">
                                         <hr />
-                                        <%--<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>"
-                                            SelectCommand="SELECT Quiz.Title, UserQuiz.DateTimeComplete, UserQuiz.Score, UserQuiz.Type, UserQuiz.UserName
-                                                            FROM UserQuiz INNER JOIN Quiz ON UserQuiz.QuizId = Quiz.QuizId 
-                                                            WHERE (UserQuiz.UserName=@UserName) AND (UserQuiz.QuizId=34) 
-                                                               OR (UserQuiz.Username=@UserName) AND (UserQuiz.QuizId=27)
-                                                               OR (UserQuiz.Username=@UserName) AND (UserQuiz.QuizId=11) 
-                                                         ORDER BY UserQuiz.DateTimeComplete DESC">
-                                            <SelectParameters>
-                                                <asp:SessionParameter Name="UserName" SessionField="UserName" />
-                                            </SelectParameters>
-                                        </asp:SqlDataSource>--%>
                                     </div>
                                 </div>
                                 <br />

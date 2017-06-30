@@ -102,6 +102,10 @@ Partial Class TestingCenter_ComputerBasics_FinalResult
                         GrdrUsername = sdr(1).ToString()
                     End While
 
+                    If sdr.IsClosed = False Then
+                        sdr.Close()
+                    End If
+
                     If String.IsNullOrEmpty(ClassNumber) OrElse (String.IsNullOrEmpty(GrdrUsername)) Then
                         Session("ShowPopupOnCertification") = True
                         Response.Redirect("~\Certification.aspx")
