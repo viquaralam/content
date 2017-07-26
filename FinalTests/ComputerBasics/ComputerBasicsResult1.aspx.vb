@@ -143,9 +143,7 @@ Partial Class TestingCenter_ComputerBasics_FinalResult
                 If rowsAffected = 0 Then
                     ' Let's just notify that the insertion didn't 
                     ' work, but let's continue on ...
-                    errorLabel.Text = "There was a problem saving your quiz results " & _
-                    "into our database.  Therefore the results from this quiz " & _
-                    "will not be displayed on the list on the main menu."
+                    errorLabel.Text = "There was a problem saving your quiz results into our database. Therefore the results from this quiz will not be displayed on the list on the main menu."
                 End If
                 'Update users table for always incrementing TimesEssential field and updating TestEssential
                 'to current datetime only when score is more than 90

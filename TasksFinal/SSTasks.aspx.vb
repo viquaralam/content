@@ -14,6 +14,9 @@ Partial Class TestingCenter_FinalTests_SSTasks
     Shared Ptr As Integer = 0
     Dim EndTime As DateTime
     Dim MailMessage As System.Net.Mail.MailMessage = New System.Net.Mail.MailMessage()
+    Shared TaskVersion As Integer
+    Shared IdentityCol As Int16
+    Shared X As String
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
         If IsPostBack = False Then
 
@@ -75,7 +78,7 @@ Partial Class TestingCenter_FinalTests_SSTasks
         If Ptr = 0 Then
             If Page.IsPostBack = False Then
                 Dim n As Integer = New Random().Next(1, 20)
-                Dim X As String
+
                 If n < 10 Then
                     X = "0" + n.ToString
                 Else
@@ -127,12 +130,9 @@ Partial Class TestingCenter_FinalTests_SSTasks
 
 
                     Dim rowsAffected1 As String
-                    Dim userQuizDataSource1 As SqlDataSource = New SqlDataSource()
-                    Dim userEnrollDataSource3 As SqlDataSource = New SqlDataSource()
-                    Dim dr As System.Data.DataRowView
 
-                    'FormView1.DataBind()
-                    'dr = CType(FormView1.DataItem, System.Data.DataRowView)
+                    Dim userQuizDataSource1 As SqlCommand = New SqlCommand()
+                    Dim userEnrollDataSource3 As SqlDataSource = New SqlDataSource()
 
                     Dim usersInfoConnection As SqlConnection
                     Dim SqlCommand As SqlCommand
@@ -195,67 +195,40 @@ Partial Class TestingCenter_FinalTests_SSTasks
 
                     Catch ex As Exception
 
-
-
                     End Try
 
-                    userQuizDataSource1.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                    userQuizDataSource1.InsertCommand = "INSERT INTO UserQuiz (QuizId, DateTimeComplete, Score, UserName, Questions, CorrectAns, CustomerId, School, Campus, Class, Grader, GraderUserName, GradeDesc, Type, Grade, DateTaken, CheckHash) VALUES (@QuizId, @DateTimeComplete, @Score, @UserName, @Questions, @CorrectAns, @CustomerId, @School, @Campus, @Class, @Grader, @GraderUserName, @GradeDesc, 'SS Task', @Grade, @DateTaken, @CheckHash)"
+                    userQuizDataSource1.Connection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
+                    userQuizDataSource1.CommandText = "INSERT INTO UserQuiz (QuizId, Score, UserName, Questions, CorrectAns, CustomerId, School, Campus, Class, Grader, GraderUserName, GradeDesc, Type, Grade, DateTaken) OUTPUT INSERTED.UserQuizId  VALUES (@QuizId, @Score, @UserName, @Questions, @CorrectAns, @CustomerId, @School, @Campus, @Class, @Grader, @GraderUserName, @GradeDesc, 'SS Task', @Grade, @DateTaken)"
+                    userQuizDataSource1.Connection.Open()
+                    userQuizDataSource1.Parameters.AddWithValue("GradeDesc", "ss/didlSSTask" + X)
+                    userQuizDataSource1.Parameters.AddWithValue("Questions", 0)
+                    userQuizDataSource1.Parameters.AddWithValue("School", UserSchool)
+                    userQuizDataSource1.Parameters.AddWithValue("Campus", UserCampus)
+                    userQuizDataSource1.Parameters.AddWithValue("Class", UserClass)
+                    userQuizDataSource1.Parameters.AddWithValue("CustomerId", CustomerId)
+                    userQuizDataSource1.Parameters.AddWithValue("DateTaken", DateTime.Now.ToString)
+                    'userQuizDataSource1.Parameters.AddWithValue("DateTimeComplete", "")
+                    userQuizDataSource1.Parameters.AddWithValue("UserName", User.Identity.Name.ToString)
+                    userQuizDataSource1.Parameters.AddWithValue("QuizId", 33)
+                    userQuizDataSource1.Parameters.AddWithValue("Grader", ClassNumber)
+                    userQuizDataSource1.Parameters.AddWithValue("GraderUserName", GrdrUsername)
+                    userQuizDataSource1.Parameters.AddWithValue("Type", "SS Task")
+                    userQuizDataSource1.Parameters.AddWithValue("Score", "")
+                    userQuizDataSource1.Parameters.AddWithValue("Grade", "Ungraded")
+                    userQuizDataSource1.Parameters.AddWithValue("CorrectAns", "")
+                    'userQuizDataSource1.InsertParameters.Add("CheckHash", "SS Task" + User.Identity.Name.ToString + "ss/didlSSTask" + X)
 
-                    'Dim Cell As String
-                    'If dr Is Nothing Then
-                    '    Cell = Nothing
-                    'Else
-                    '    Cell = dr("EnrollSchoolId").ToString()
-                    'End If
-
-                    userQuizDataSource1.InsertParameters.Add("GradeDesc", "ss/didlSSTask" + X)
-                    userQuizDataSource1.InsertParameters.Add("Questions", 0)
-                    userQuizDataSource1.InsertParameters.Add("School", UserSchool)
-
-                    'If dr Is Nothing Then
-                    '    Cell = Nothing
-                    'Else
-                    '    Cell = dr("EnrollCampus").ToString()
-                    'End If
-                    userQuizDataSource1.InsertParameters.Add("Campus", UserCampus)
-
-                    'If dr Is Nothing Then
-                    '    Cell = Nothing
-                    'Else
-                    '    Cell = dr("EnrollClass").ToString()
-                    'End If
-                    userQuizDataSource1.InsertParameters.Add("Class", UserClass)
-
-                    'If dr Is Nothing Then
-                    '    Cell = Nothing
-                    'Else
-                    '    Cell = dr("EnrollCustomerId").ToString()
-                    'End If
-                    userQuizDataSource1.InsertParameters.Add("CustomerId", CustomerId)
-                    userQuizDataSource1.InsertParameters.Add("DateTaken", DateTime.Now.ToString)
-                    userQuizDataSource1.InsertParameters.Add("DateTimeComplete", "")
-                    userQuizDataSource1.InsertParameters.Add("UserName", User.Identity.Name.ToString)
-                    userQuizDataSource1.InsertParameters.Add("QuizId", 33)
-                    userQuizDataSource1.InsertParameters.Add("Grader", ClassNumber)
-                    userQuizDataSource1.InsertParameters.Add("GraderUserName", GrdrUsername)
-                    userQuizDataSource1.InsertParameters.Add("Type", "SS Task")
-                    userQuizDataSource1.InsertParameters.Add("Score", "")
-                    userQuizDataSource1.InsertParameters.Add("Grade", "Ungraded")
-                    userQuizDataSource1.InsertParameters.Add("CorrectAns", "")
-                    userQuizDataSource1.InsertParameters.Add("CheckHash", "SS Task" + User.Identity.Name.ToString + "ss/didlSSTask" + X)
-
-                    rowsAffected1 = userQuizDataSource1.Insert()
+                    IdentityCol = userQuizDataSource1.ExecuteScalar()
 
                     Dim conn As SqlConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
-                    Dim Command As SqlCommand = New SqlCommand("SELECT IDENT_CURRENT ('UserQuiz') AS Current_Identity")
-                    Command.Connection = conn
-                    conn.Open()
-                    Dim Identity As Decimal = DirectCast(Command.ExecuteScalar(), Decimal)
+                    Dim Command As SqlCommand ' = New SqlCommand("SELECT IDENT_CURRENT ('UserQuiz') AS Current_Identity")
+                    'Command.Connection = conn
+                    'Dim Identity As Decimal = DirectCast(Command.ExecuteScalar(), Decimal)
 
                     Command = New SqlCommand("UPDATE Users SET TimesSS = ISNULL(TimesSS, 0) + 1 WHERE UserName = @UserName")
                     Command.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name
                     Command.Connection = conn
+                    conn.Open()
                     Command.ExecuteNonQuery()
 
                     'Close the connection now
@@ -265,9 +238,9 @@ Partial Class TestingCenter_FinalTests_SSTasks
                     Dim userQuizDataSource2 As SqlDataSource = New SqlDataSource()
 
                     userQuizDataSource2.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                    userQuizDataSource2.InsertCommand = "INSERT INTO CheckList (UserQuizId, TaskType, TaskDate, TaskVer, UserName, TaskGrade, Task0, Task1, Task2, Task3, Task4, Task5, Task6, Task7, Task8, Task9, Task10, Task11, Task12, Task13, Task14, Task15, Task16, Task17, Task18, Task19, Task20, Task21, Task22, Task23, Task24, Task25, Task26, Task27, Task28, Task29, Task30, CheckHash, Tasky0, Tasky1, Tasky2, Tasky3, Tasky4, Tasky5, Tasky6, Tasky7, Tasky8, Tasky9, Tasky10, Tasky11, Tasky12, Tasky13, Tasky14, Tasky15, Tasky16, Tasky17, Tasky18, Tasky19, Tasky20, Tasky21, Tasky22, Tasky23, Tasky24, Tasky25, Tasky26, Tasky27, Tasky28, Tasky29, Tasky30) VALUES (@UserQuizId, @TaskType, @TaskDate, @TaskVer, @UserName, @TaskGrade, @Task0, @Task1, @Task2, @Task3, @Task4, @Task5, @Task6, @Task7, @Task8, @Task9, @Task10, @Task11, @Task12, @Task13, @Task14, @Task15, @Task16, @Task17, @Task18, @Task19, @Task20, @Task21, @Task22, @Task23, @Task24, @Task25, @Task26, @Task27, @Task28, @Task29, @Task30, @CheckHash ,@Tasky0, @Tasky1, @Tasky2, @Tasky3, @Tasky4, @Tasky5, @Tasky6, @Tasky7, @Tasky8, @Tasky9, @Tasky10, @Tasky11, @Tasky12, @Tasky13, @Tasky14, @Tasky15, @Tasky16, @Tasky17, @Tasky18, @Tasky19, @Tasky20, @Tasky21, @Tasky22, @Tasky23, @Tasky24, @Tasky25, @Tasky26, @Tasky27, @Tasky28, @Tasky29, @Tasky30)"
+                    userQuizDataSource2.InsertCommand = "INSERT INTO CheckList (UserQuizId, TaskType, TaskDate, TaskVer, UserName, TaskGrade, Task0, Task1, Task2, Task3, Task4, Task5, Task6, Task7, Task8, Task9, Task10, Task11, Task12, Task13, Task14, Task15, Task16, Task17, Task18, Task19, Task20, Task21, Task22, Task23, Task24, Task25, Task26, Task27, Task28, Task29, Task30, Tasky0, Tasky1, Tasky2, Tasky3, Tasky4, Tasky5, Tasky6, Tasky7, Tasky8, Tasky9, Tasky10, Tasky11, Tasky12, Tasky13, Tasky14, Tasky15, Tasky16, Tasky17, Tasky18, Tasky19, Tasky20, Tasky21, Tasky22, Tasky23, Tasky24, Tasky25, Tasky26, Tasky27, Tasky28, Tasky29, Tasky30) VALUES (@UserQuizId, @TaskType, @TaskDate, @TaskVer, @UserName, @TaskGrade, @Task0, @Task1, @Task2, @Task3, @Task4, @Task5, @Task6, @Task7, @Task8, @Task9, @Task10, @Task11, @Task12, @Task13, @Task14, @Task15, @Task16, @Task17, @Task18, @Task19, @Task20, @Task21, @Task22, @Task23, @Task24, @Task25, @Task26, @Task27, @Task28, @Task29, @Task30 ,@Tasky0, @Tasky1, @Tasky2, @Tasky3, @Tasky4, @Tasky5, @Tasky6, @Tasky7, @Tasky8, @Tasky9, @Tasky10, @Tasky11, @Tasky12, @Tasky13, @Tasky14, @Tasky15, @Tasky16, @Tasky17, @Tasky18, @Tasky19, @Tasky20, @Tasky21, @Tasky22, @Tasky23, @Tasky24, @Tasky25, @Tasky26, @Tasky27, @Tasky28, @Tasky29, @Tasky30)"
 
-                    userQuizDataSource2.InsertParameters.Add("UserQuizId", Identity)
+                    userQuizDataSource2.InsertParameters.Add("UserQuizId", IdentityCol)
                     userQuizDataSource2.InsertParameters.Add("TaskType", "SS Task")
                     userQuizDataSource2.InsertParameters.Add("TaskVer", "ss/didlSSTask" + X)
                     userQuizDataSource2.InsertParameters.Add("TaskDate", DateTime.Now.ToString)
@@ -304,7 +277,7 @@ Partial Class TestingCenter_FinalTests_SSTasks
                     userQuizDataSource2.InsertParameters.Add("Task28", "27. Shading not created as directed.")
                     userQuizDataSource2.InsertParameters.Add("Task29", "28. The footer information was not entered or aligned correctly.")
                     userQuizDataSource2.InsertParameters.Add("Task30", "")
-                    userQuizDataSource2.InsertParameters.Add("CheckHash", "SS Task" + User.Identity.Name.ToString + "ss/didlSSTask" + X)
+                    'userQuizDataSource2.InsertParameters.Add("CheckHash", "SS Task" + User.Identity.Name.ToString + "ss/didlSSTask" + X)
                     userQuizDataSource2.InsertParameters.Add("Tasky0", "")
                     userQuizDataSource2.InsertParameters.Add("Tasky1", "")
                     userQuizDataSource2.InsertParameters.Add("Tasky2", "")
@@ -372,6 +345,27 @@ Partial Class TestingCenter_FinalTests_SSTasks
 
         Dim strSaveFileAs As String
         Dim strStatusMessage As String = ""
+        Dim allFiles(4) As String
+        Dim msg As String = ""
+
+        Dim NumberOfFiles As Int16 = 0
+        allFiles = GetallFiles(IdentityCol, NumberOfFiles)
+
+        ' Validate if the number of uploaded files are exceeded
+
+        If NumberOfFiles >= 3 Then
+            msg = "<script language='javascript'>alert('" & NumberOfFiles & " files are already uploaded for this task, Please contact your grader');</script>"
+            ClientScript.RegisterClientScriptBlock(Page.GetType, "Script", msg)
+            Return
+        End If
+
+        If (Not CheckFileName(myFileUpload.FileName, NumberOfFiles + 1)) Then
+            msg = "<script language='javascript'>alert('File name is incorrect. Please correct and upload again');</script>"
+            ClientScript.RegisterClientScriptBlock(Page.GetType, "Script", msg)
+            Return
+        End If
+
+
 
         strSaveFileAs = Server.MapPath("~/uploads/ss/") & User.Identity.Name & myFileUpload.FileName
 
@@ -382,6 +376,14 @@ Partial Class TestingCenter_FinalTests_SSTasks
         Try
             If myFileUpload.HasFile Then
                 myFileUpload.SaveAs(strSaveFileAs)
+                'Update filename in corresponding field of UserQuiz.
+                Dim Command As SqlCommand = New SqlCommand("UPDATE UserQuiz SET FileName" & NumberOfFiles + 1 & " = @FullFileName WHERE UserQuizId = @UserQuizId")
+                Command.Parameters.Add("FullFileName", SqlDbType.VarChar).Value = User.Identity.Name & myFileUpload.FileName
+                Command.Parameters.Add("UserQuizId", SqlDbType.Decimal).Value = IdentityCol
+                Command.Connection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
+                Command.Connection.Open()
+                Command.ExecuteNonQuery()
+
                 strStatusMessage = myFileUpload.FileName
                 TxtBody.Text = TxtBody.Text + "  File Name:  " + lblFileName.Text + "  File Type:" + lblFileType.Text + "  File Size:" + lblFileSize.Text + "    Transferred:" + DateTime.Now.ToString
             Else
@@ -395,6 +397,51 @@ Partial Class TestingCenter_FinalTests_SSTasks
             lblSaveResults.Text = strStatusMessage
         End Try
     End Sub
+    Private Function CheckFileName(fileName As String, NumberOfFiles As Integer) As Boolean
+        If (NumberOfFiles < 3 And ((fileName = "ss" & X & "_file" & NumberOfFiles.ToString() & ".pdf"))) Then
+            Return True
+        ElseIf (NumberOfFiles = 3) Then
+            If ((TaskVersion = 1 Or TaskVersion = 11 Or TaskVersion = 4 Or TaskVersion = 14)) Then
+                If ((fileName = "ss" & X & "_grades.xlsx") Or (fileName = "ss" & X & "_grades.xls")) Then
+                    Return True
+                Else
+                    Return False
+                End If
+            Else
+                If ((fileName = "ss" & X & "_task.xlsx") Or (fileName = "ss" & X & "_task.xls")) Then
+                    Return True
+                Else
+                    Return False
+                End If
+            End If
+        Else
+            Return False
+        End If
+    End Function
+
+    Private Function GetallFiles(UserQuizId As Decimal, ByRef NumberOfFiles As Int16) As String()
+        Dim fileList(4) As String
+        Dim i As Int16 = 0
+        Dim sdr As SqlDataReader
+        Dim conn As SqlConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
+        Dim Command As SqlCommand = New SqlCommand("SELECT FileName1 FROM UserQuiz UQ WHERE UserQuizId = @UserQuizId UNION All" & vbCrLf & _
+                                                   "SELECT FileName2 FROM UserQuiz UQ WHERE UserQuizId = @UserQuizId UNION All" & vbCrLf & _
+                                                   "SELECT FileName3 FROM UserQuiz UQ WHERE UserQuizId = @UserQuizId UNION All" & vbCrLf & _
+                                                   "SELECT FileName4 FROM UserQuiz UQ WHERE UserQuizId = @UserQuizId ")
+        Command.Parameters.AddWithValue("UserQuizId", IdentityCol)
+        Command.Connection = conn
+        conn.Open()
+        sdr = Command.ExecuteReader()
+        While sdr.Read()
+            If sdr(0) IsNot Nothing AndAlso sdr(0).ToString() IsNot String.Empty Then
+                fileList(i) = sdr(0).ToString()
+                i += 1
+            End If
+        End While
+
+        NumberOfFiles = i
+        Return fileList
+    End Function
     Protected Sub ExitBtn1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExitBtn1.Click
         Freeze = 0
         Ptr = 0

@@ -25,8 +25,7 @@ Partial Class TestingCenter_FinalTests_FMTasks
     Shared TempFile4 As String
     Shared TempX As Integer = 0
     Shared X As String = 0
-    Shared TaskVersion As Integer
-    Shared IdentityCol As Int16
+    Dim IdentityCol As Int64
 
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
         If IsPostBack = False Then
@@ -61,14 +60,13 @@ Partial Class TestingCenter_FinalTests_FMTasks
 
         If Ptr = 0 Then
             If Page.IsPostBack = False Then
-                TaskVersion = New Random().Next(1, 20)
+                Dim n As Integer = New Random().Next(1, 20)
 
-                If TaskVersion < 10 Then
-                    X = "0" + TaskVersion.ToString
+                If n < 10 Then
+                    X = "0" + n.ToString
                 Else
-                    X = TaskVersion.ToString
+                    X = n.ToString
                 End If
-
                 Session.Add("QuizId", 25)
                 Session.Add("Type", "FF Task")
                 If Profile.IsAnonymous = False Then
@@ -86,7 +84,7 @@ Partial Class TestingCenter_FinalTests_FMTasks
                     Label2.Text = EndTime.ToString
                 End If
 
-                TaskLink1.NavigateUrl = "~/FinalTests/Tasks/FM/didlFMTask" + TaskVersion.ToString + ".pdf"
+                TaskLink1.NavigateUrl = "~/FinalTests/Tasks/FM/didlFMTask" + n.ToString + ".pdf"
                 TxtBody.Text = "Tasks/FM/didlFMTask" + X + ".pdf  -----  Start: " + Start
                 TxtName.Text = User.Identity.Name.Trim()
                 Ptr = 1
@@ -114,6 +112,10 @@ Partial Class TestingCenter_FinalTests_FMTasks
 
                 Dim userQuizDataSource1 As SqlCommand = New SqlCommand()
                 Dim userEnrollDataSource3 As SqlDataSource = New SqlDataSource()
+                'Dim dr As System.Data.DataRowView
+
+                'FormView1.DataBind()
+                'dr = CType(FormView1.DataItem, System.Data.DataRowView)
 
                 Dim usersInfoConnection As SqlConnection
                 Dim SqlCommand As SqlCommand
@@ -180,17 +182,41 @@ Partial Class TestingCenter_FinalTests_FMTasks
                 End Try
 
                 userQuizDataSource1.Connection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
-                userQuizDataSource1.CommandText = "INSERT INTO UserQuiz (QuizId, Score, UserName, Questions, CorrectAns, CustomerId, School, Campus, Class, Grader, GraderUserName, GradeDesc, Type, Grade, DateTaken) OUTPUT INSERTED.UserQuizId  VALUES (@QuizId, @Score, @UserName, @Questions, @CorrectAns, @CustomerId, @School, @Campus, @Class, @Grader, @GraderUserName, @GradeDesc, @Type, @Grade, @DateTaken)"
+                userQuizDataSource1.CommandText = "INSERT INTO UserQuiz (QuizId, DateTimeComplete, Score, UserName, Questions, CorrectAns, CustomerId, School, Campus, Class, Grader, GraderUserName, GradeDesc, Type, Grade, DateTaken, CheckHash) OUTPUT INSERTED.UserQuizId  VALUES (@QuizId, @DateTimeComplete, @Score, @UserName, @Questions, @CorrectAns, @CustomerId, @School, @Campus, @Class, @Grader, @GraderUserName, @GradeDesc, @Type, @Grade, @DateTaken, @CheckHash)"
                 userQuizDataSource1.Connection.Open()
+                'Dim Cell As String
+                'If dr Is Nothing Then
+                '    Cell = Nothing
+                'Else
+                '    Cell = dr("EnrollSchoolId").ToString()
+                'End If
 
                 userQuizDataSource1.Parameters.AddWithValue("GradeDesc", "ff/didlFFTask" + X)
                 userQuizDataSource1.Parameters.AddWithValue("Questions", 0)
                 userQuizDataSource1.Parameters.AddWithValue("School", UserSchool)
+
+                'If dr Is Nothing Then
+                '    Cell = Nothing
+                'Else
+                '    Cell = dr("EnrollCampus").ToString()
+                'End If
                 userQuizDataSource1.Parameters.AddWithValue("Campus", UserCampus)
+
+                'If dr Is Nothing Then
+                '    Cell = Nothing
+                'Else
+                '    Cell = dr("EnrollClass").ToString()
+                'End If
                 userQuizDataSource1.Parameters.AddWithValue("Class", UserClass)
+
+                'If dr Is Nothing Then
+                '    Cell = Nothing
+                'Else
+                '    Cell = dr("EnrollCustomerId").ToString()
+                'End If
                 userQuizDataSource1.Parameters.AddWithValue("CustomerId", CustomerId)
                 userQuizDataSource1.Parameters.AddWithValue("DateTaken", DateTime.Now.ToString)
-                'userQuizDataSource1.Parameters.AddWithValue("DateTimeComplete", "")
+                userQuizDataSource1.Parameters.AddWithValue("DateTimeComplete", "")
                 userQuizDataSource1.Parameters.AddWithValue("UserName", User.Identity.Name.ToString)
                 userQuizDataSource1.Parameters.AddWithValue("QuizID", 25)
                 userQuizDataSource1.Parameters.AddWithValue("Grader", ClassNumber)
@@ -199,14 +225,18 @@ Partial Class TestingCenter_FinalTests_FMTasks
                 userQuizDataSource1.Parameters.AddWithValue("Score", "")
                 userQuizDataSource1.Parameters.AddWithValue("Grade", "Ungraded")
                 userQuizDataSource1.Parameters.AddWithValue("CorrectAns", "")
-                'userQuizDataSource1.Parameters.AddWithValue("CheckHash", "FF Task" + User.Identity.Name.ToString + "ff/didlFFTask" + X)
-                IdentityCol = userQuizDataSource1.ExecuteScalar()
+                userQuizDataSource1.Parameters.AddWithValue("CheckHash", "FF Task" + User.Identity.Name.ToString + "ff/didlFFTask" + X)
+                IdentityCol = DirectCast(userQuizDataSource1.ExecuteScalar(), Int64)
+
 
                 Dim conn As SqlConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
+                Dim Command As SqlCommand = New SqlCommand("Select IDENT_CURRENT ('UserQuiz') AS Current_Identity")
+                Command.Connection = conn
                 conn.Open()
+                Dim Identity As Decimal = DirectCast(Command.ExecuteScalar(), Decimal)
 
 
-                Dim Command As SqlCommand = New SqlCommand("UPDATE Users SET TimesFM = ISNULL(TimesFM, 0) + 1 WHERE UserName = @UserName")
+                Command = New SqlCommand("UPDATE Users SET TimesFM = ISNULL(TimesFM, 0) + 1 WHERE UserName = @UserName")
                 Command.Parameters.Add("UserName", SqlDbType.VarChar).Value = User.Identity.Name
                 Command.Connection = conn
                 Command.ExecuteNonQuery()
@@ -218,9 +248,9 @@ Partial Class TestingCenter_FinalTests_FMTasks
                 Dim userQuizDataSource2 As SqlDataSource = New SqlDataSource()
 
                 userQuizDataSource2.ConnectionString = ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString()
-                userQuizDataSource2.InsertCommand = "INSERT INTO CheckList (UserQuizId, TaskType, TaskDate, TaskVer, UserName, TaskGrade, Task0, Task1, Task2, Task3, Task4, Task5, Task6, Task7, Task8, Task9, Task10, Task11, Task12, Task13, Task14, Tasky0, Tasky1, Tasky2, Tasky3, Tasky4, Tasky5, Tasky6, Tasky7, Tasky8, Tasky9, Tasky10, Tasky11, Tasky12, Tasky13, Tasky14) VALUES (@UserQuizId, @TaskType, @TaskDate, @TaskVer, @UserName, @TaskGrade, @Task0, @Task1, @Task2, @Task3, @Task4, @Task5, @Task6, @Task7, @Task8, @Task9, @Task10, @Task11, @Task12, @Task13, @Task14, @Tasky0, @Tasky1, @Tasky2, @Tasky3, @Tasky4, @Tasky5, @Tasky6, @Tasky7, @Tasky8, @Tasky9, @Tasky10, @Tasky11, @Tasky12, @Tasky13, @Tasky14)"
+                userQuizDataSource2.InsertCommand = "INSERT INTO CheckList (UserQuizId, TaskType, TaskDate, TaskVer, UserName, TaskGrade, Task0, Task1, Task2, Task3, Task4, Task5, Task6, Task7, Task8, Task9, Task10, Task11, Task12, Task13, Task14, CheckHash, Tasky0, Tasky1, Tasky2, Tasky3, Tasky4, Tasky5, Tasky6, Tasky7, Tasky8, Tasky9, Tasky10, Tasky11, Tasky12, Tasky13, Tasky14) VALUES (@UserQuizId, @TaskType, @TaskDate, @TaskVer, @UserName, @TaskGrade, @Task0, @Task1, @Task2, @Task3, @Task4, @Task5, @Task6, @Task7, @Task8, @Task9, @Task10, @Task11, @Task12, @Task13, @Task14, @CheckHash, @Tasky0, @Tasky1, @Tasky2, @Tasky3, @Tasky4, @Tasky5, @Tasky6, @Tasky7, @Tasky8, @Tasky9, @Tasky10, @Tasky11, @Tasky12, @Tasky13, @Tasky14)"
 
-                userQuizDataSource2.InsertParameters.Add("UserQuizId", IdentityCol)
+                userQuizDataSource2.InsertParameters.Add("UserQuizId", Identity)
                 userQuizDataSource2.InsertParameters.Add("TaskType", "FF Task")
                 userQuizDataSource2.InsertParameters.Add("TaskVer", "ff/didlFFTask" + X)
                 userQuizDataSource2.InsertParameters.Add("TaskDate", DateTime.Now.ToString)
@@ -242,7 +272,7 @@ Partial Class TestingCenter_FinalTests_FMTasks
                 userQuizDataSource2.InsertParameters.Add("Task13", "12. The correct path name with file name was not identified.")
                 userQuizDataSource2.InsertParameters.Add("Task14", "13. The correct Windows Help screen was not displayed.")
                 userQuizDataSource2.InsertParameters.Add("Task15", "")
-                'userQuizDataSource2.InsertParameters.Add("CheckHash", "FF Task" + User.Identity.Name.ToString + "ff/didlFFTask" + X)
+                userQuizDataSource2.InsertParameters.Add("CheckHash", "FF Task" + User.Identity.Name.ToString + "ff/didlFFTask" + X)
                 userQuizDataSource2.InsertParameters.Add("Tasky0", "")
                 userQuizDataSource2.InsertParameters.Add("Tasky1", "")
                 userQuizDataSource2.InsertParameters.Add("Tasky2", "")
@@ -267,62 +297,47 @@ Partial Class TestingCenter_FinalTests_FMTasks
 
     End Sub
 
+    Protected Function GetUploadList() As String()
+        Dim folder As String = Server.MapPath("~/uploads/ff/")
+        Dim files() As String = Directory.GetFiles(folder)
+
+        Dim fileNames(files.Length - 1) As String
+        Array.Sort(files)
+
+        For i As Integer = 0 To files.Length - 1
+            fileNames(i) = Path.GetFileName(files(i))
+            fileName = fileNames(i)
+        Next
+
+        Return fileNames
+    End Function
+
+
+    Protected Function DoNothing() As Boolean
+        Return False
+    End Function
 
     Protected Sub btnFileUpload_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnFileUpload.Click
 
         Dim strSaveFileAs As String
         Dim strStatusMessage As String = ""
-        Dim allFiles(4) As String
-        Dim msg As String = ""
-        Dim NumberOfFiles As Int16 = 0
-        allFiles = GetallFiles(IdentityCol, NumberOfFiles)
 
-        ' Validate if the number of uploaded files are exceeded
-        If ((TaskVersion = 4 Or TaskVersion = 6 Or TaskVersion = 10 Or TaskVersion = 14 Or TaskVersion = 16 Or TaskVersion = 10)) Then
-            If NumberOfFiles >= 4 Then
-                msg = "<script language='javascript'>alert('" & NumberOfFiles & " files are already uploaded for this task, Please contact your grader');</script>"
-                ClientScript.RegisterClientScriptBlock(Page.GetType, "Script", msg)
-                'MessageBox.Show(NumberOfFiles & " files are already uploaded for this task, Please contact your grader")
-                Return
-            End If
-        Else
-            If NumberOfFiles >= 3 Then
-                msg = "<script language='javascript'>alert('" & NumberOfFiles & " files are already uploaded for this task, Please contact your grader');</script>"
-                ClientScript.RegisterClientScriptBlock(Page.GetType, "Script", msg)
-                'MessageBox.Show(NumberOfFiles & " files are already uploaded for this task, Please contact your grader")
-                Return
-            End If
-        End If
-
-        If (Not CheckFileName(myFileUpload.FileName, NumberOfFiles + 1)) Then
-            ClientScript.RegisterClientScriptBlock(Page.GetType, "Script", "<script language='javascript'>alert('File name is incorrect. Please correct and upload again');</script>")
-            'MessageBox.Show("File name is incorrect. Please correct and upload again")
-            Return
-        End If
-
-
+        'GetallFiles(
 
         strSaveFileAs = Server.MapPath("~/uploads/ff/") & User.Identity.Name & myFileUpload.FileName
 
+        If ValidateFileName(myFileUpload.FileName, Convert.ToInt16(X)) Then
 
+        End If
 
 
         lblFileName.Text = myFileUpload.PostedFile.FileName
-        lblFileType.Text = myFileUpload.PostedFile.ContentType
+            lblFileType.Text = myFileUpload.PostedFile.ContentType
         lblFileSize.Text = myFileUpload.PostedFile.ContentLength
 
         Try
             If myFileUpload.HasFile Then
                 myFileUpload.SaveAs(strSaveFileAs)
-
-                'Update filename in corresponding field of UserQuiz.
-                Dim Command As SqlCommand = New SqlCommand("UPDATE UserQuiz SET FileName" & NumberOfFiles + 1 & " = @FullFileName WHERE UserQuizId = @UserQuizId")
-                Command.Parameters.Add("FullFileName", SqlDbType.VarChar).Value = User.Identity.Name & myFileUpload.FileName
-                Command.Parameters.Add("UserQuizId", SqlDbType.Decimal).Value = IdentityCol
-                Command.Connection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
-                Command.Connection.Open()
-                Command.ExecuteNonQuery()
-
                 strStatusMessage = myFileUpload.FileName
                 TxtBody.Text = TxtBody.Text + "  File Name:  " + lblFileName.Text + "  File Type:" + lblFileType.Text + "  File Size:" + lblFileSize.Text + "    Transferred:" + DateTime.Now.ToString
             Else
@@ -338,39 +353,11 @@ Partial Class TestingCenter_FinalTests_FMTasks
 
     End Sub
 
-    Private Function CheckFileName(fileName As String, NumberOfFiles As Integer) As Boolean
-        If ((fileName = "fm" & X & "_file" & NumberOfFiles.ToString() & ".docx") Or (fileName = "fm" & X & "_file" & NumberOfFiles.ToString() & ".doc")) Then
-            Return True
-        Else
-            Return False
-        End If
+    Private Function ValidateFileName(fileName As String, version As Short) As Boolean
+        Dim correctFileName As Boolean
+
+        Return correctFileName
     End Function
-
-    Private Function GetallFiles(UserQuizId As Decimal, ByRef NumberOfFiles As Int16) As String()
-        Dim fileList(4) As String
-        Dim i As Int16 = 0
-        Dim sdr As SqlDataReader
-        Dim conn As SqlConnection = New SqlConnection(ConfigurationManager.ConnectionStrings("jumpstartConnectionString").ToString())
-        Dim Command As SqlCommand = New SqlCommand("SELECT FileName1 FROM UserQuiz UQ WHERE UserQuizId = @UserQuizId UNION All" & vbCrLf & _
-                                                   "SELECT FileName2 FROM UserQuiz UQ WHERE UserQuizId = @UserQuizId UNION All" & vbCrLf & _
-                                                   "SELECT FileName3 FROM UserQuiz UQ WHERE UserQuizId = @UserQuizId UNION All" & vbCrLf & _
-                                                   "SELECT FileName4 FROM UserQuiz UQ WHERE UserQuizId = @UserQuizId ")
-        Command.Parameters.AddWithValue("UserQuizId", IdentityCol)
-        Command.Connection = conn
-        conn.Open()
-        sdr = Command.ExecuteReader()
-        While sdr.Read()
-            If sdr(0) IsNot Nothing AndAlso sdr(0).ToString() IsNot String.Empty Then
-                fileList(i) = sdr(0).ToString()
-                i += 1
-            End If
-        End While
-
-        NumberOfFiles = i
-        Return fileList
-    End Function
-
-
 
     Protected Sub ExitBtn1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExitBtn1.Click
 

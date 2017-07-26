@@ -160,7 +160,7 @@
                                     <hr style="width: 546px" />
 
                                     <asp:FileUpload ID="myFileUpload" runat="server" Width="335px" />
-                                    <asp:Button ID="btnFileUpload" runat="server" Text="Upload File" OnClick="btnFileUpload_Click"
+                                    <asp:Button ID="btnFileUpload" runat="server" Text="Upload File" 
                                         Height="21px" />
                                                                         <p>
                                         Received the following file:</p>

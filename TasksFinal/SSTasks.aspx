@@ -182,7 +182,7 @@
                                         </strong>Repeat this step until all files are uploaded. Each file upload may take
                                         1 to 2 minutes to complete, please be patient.&nbsp;<br />
                                         <asp:FileUpload ID="myFileUpload" runat="server" Width="335px" />
-                                        <asp:Button ID="btnFileUpload" runat="server" Text="Upload File" OnClick="btnFileUpload_Click"
+                                        <asp:Button ID="btnFileUpload" runat="server" Text="Upload File" 
                                             Height="21px" />
                                         <hr style="width: 546px" />
                                         <p style="width: 543px">
