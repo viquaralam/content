@@ -213,7 +213,7 @@ Partial Class TestingCenter_FinalTests_SSTasks
                     userQuizDataSource1.Parameters.AddWithValue("Grader", ClassNumber)
                     userQuizDataSource1.Parameters.AddWithValue("GraderUserName", GrdrUsername)
                     userQuizDataSource1.Parameters.AddWithValue("Type", "SS Task")
-                    userQuizDataSource1.Parameters.AddWithValue("Score", "")
+                    userQuizDataSource1.Parameters.AddWithValue("Score", DBNull.Value)
                     userQuizDataSource1.Parameters.AddWithValue("Grade", "Ungraded")
                     userQuizDataSource1.Parameters.AddWithValue("CorrectAns", "")
                     'userQuizDataSource1.InsertParameters.Add("CheckHash", "SS Task" + User.Identity.Name.ToString + "ss/didlSSTask" + X)

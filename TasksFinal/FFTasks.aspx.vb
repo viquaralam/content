@@ -196,7 +196,7 @@ Partial Class TestingCenter_FinalTests_FMTasks
                 userQuizDataSource1.Parameters.AddWithValue("Grader", ClassNumber)
                 userQuizDataSource1.Parameters.AddWithValue("GraderUserName", GrdrUsername)
                 userQuizDataSource1.Parameters.AddWithValue("Type", "FF Task")
-                userQuizDataSource1.Parameters.AddWithValue("Score", "")
+                userQuizDataSource1.Parameters.AddWithValue("Score", DBNull.Value)
                 userQuizDataSource1.Parameters.AddWithValue("Grade", "Ungraded")
                 userQuizDataSource1.Parameters.AddWithValue("CorrectAns", "")
                 'userQuizDataSource1.Parameters.AddWithValue("CheckHash", "FF Task" + User.Identity.Name.ToString + "ff/didlFFTask" + X)
