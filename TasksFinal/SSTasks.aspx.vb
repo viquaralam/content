@@ -8,11 +8,11 @@ Imports System.Windows.Forms
 Partial Class TestingCenter_FinalTests_SSTasks
     Inherits System.Web.UI.Page
     Dim StartTime As DateTime = DateTime.Now.ToString
-    Dim fileName As String
-    Dim Start As String
-    Shared Freeze As Integer
-    Shared Ptr As Integer = 0
     Dim EndTime As DateTime
+    Dim Start As String
+    'Shared Freeze As Integer
+    Dim fileName As String
+    'Shared Ptr As Integer = 0
     Dim MailMessage As System.Net.Mail.MailMessage = New System.Net.Mail.MailMessage()
     Shared TaskVersion As Integer
     Shared IdentityCol As Int16
@@ -20,48 +20,50 @@ Partial Class TestingCenter_FinalTests_SSTasks
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
         If IsPostBack = False Then
 
-            Freeze = 0
-            Ptr = 0
+            Freeze.Value = 0
+            Ptr.Value = 0
             fileName = ""
             Start = ""
 
         End If
     End Sub
 
-    Protected Sub BtnSend_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnSend.Click
+    'Protected Sub BtnSend_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnSend.Click
 
-        If TxtFrom.Text = "" Or TxtName.Text = "" Then
+    '    If TxtFrom.Text = "" Or TxtName.Text = "" Then
 
-            Required1.Visible = "True"
-            Required2.Visible = "True"
-        Else
-            MailMessage.From = New System.Net.Mail.MailAddress(TxtFrom.Text.Trim())
-            MailMessage.To.Add(New System.Net.Mail.MailAddress(TxtTo.Text.Trim()))
-            MailMessage.Subject = TxtSubject.Text.Trim()
-            MailMessage.Body = TxtBody.Text + "          End:  " + DateTime.Now.ToString + "  Name : " + TxtName.Text.Trim()
+    '        Required1.Visible = "True"
+    '        Required2.Visible = "True"
+    '    Else
+    '        MailMessage.From = New System.Net.Mail.MailAddress(TxtFrom.Text.Trim())
+    '        MailMessage.To.Add(New System.Net.Mail.MailAddress(TxtTo.Text.Trim()))
+    '        MailMessage.Subject = TxtSubject.Text.Trim()
+    '        MailMessage.Body = TxtBody.Text + "          End:  " + DateTime.Now.ToString + "  Name : " + TxtName.Text.Trim()
 
-            Dim smtpClient As System.Net.Mail.SmtpClient = New System.Net.Mail.SmtpClient()
+    '        Dim smtpClient As System.Net.Mail.SmtpClient = New System.Net.Mail.SmtpClient()
 
-            smtpClient.Send(MailMessage)
+    '        smtpClient.Send(MailMessage)
 
-            TxtFrom.Text = ""
-            TxtSubject.Text = ""
-            TxtBody.Text = ""
-            TxtBody.Text = ""
-            TxtName.Text = ""
-            Console.WriteLine("Email sent")
-            Required1.Visible = "False"
-            Required2.Visible = "False"
-            BtnSend.Visible = "False"
+    '        TxtFrom.Text = ""
+    '        TxtSubject.Text = ""
+    '        TxtBody.Text = ""
+    '        TxtBody.Text = ""
+    '        TxtName.Text = ""
+    '        Console.WriteLine("Email sent")
+    '        Required1.Visible = "False"
+    '        Required2.Visible = "False"
+    '        BtnSend.Visible = "False"
 
-            Response.Redirect("~/Login.aspx")
-        End If
-    End Sub
+    '        Response.Redirect("~/Login.aspx")
+    '    End If
+    'End Sub
     Protected Sub Timer1_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-        Label1.Text = DateTime.Now.ToString
-        If Label1.Text = Label2.Text Then
-            Freeze = 0
-            Ptr = 0
+        Dim startdate As DateTime
+        DateTime.TryParse(Label1.Text, startdate)
+
+        If ((DateTime.Now - startdate).TotalMinutes >= 30) Then
+            Freeze.Value = 0
+            Ptr.Value = 0
             fileName = ""
             Start = ""
             Response.Redirect("~/Login.aspx")
@@ -75,7 +77,7 @@ Partial Class TestingCenter_FinalTests_SSTasks
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
-        If Ptr = 0 Then
+        If Ptr.Value = 0 Then
             If Page.IsPostBack = False Then
                 Dim n As Integer = New Random().Next(1, 20)
 
@@ -87,27 +89,31 @@ Partial Class TestingCenter_FinalTests_SSTasks
                 Session.Add("QuizId", 33)
                 If Profile.IsAnonymous = False Then
                     Session.Add("UserName", User.Identity.Name)
-
-                    'Else
+                Else
+                    Freeze.Value = 0
+                    Ptr.Value = 0
+                    fileName = ""
+                    Start = ""
                     '    Response.Redirect("~/Login.aspx")
                 End If
 
-                If Freeze = 0 Then
+                If Freeze.Value = 0 Then
                     EndTime = DateTime.Now.AddMinutes(30).ToString
                     Start = DateTime.Now.ToString
-                    Freeze = 1
-                    Label2.Text = EndTime.ToString
+                    Freeze.Value = 1
+                    'Label2.Text = EndTime.ToString
+                    'Label1.Text = Start.ToString
                 End If
 
 
                 TaskLink1.NavigateUrl = "~/FinalTests/Tasks/SS/didlSSTask" + n.ToString + ".pdf"
-                TxtBody.Text = "Tasks/SS/didlSSTask" + X + ".pdf  -----  Start: " + Start
-                TxtName.Text = User.Identity.Name.Trim()
+                'TxtBody.Text = "Tasks/SS/didlSSTask" + X + ".pdf  -----  Start: " + Start
+                'TxtName.Text = User.Identity.Name.Trim()
                 'Try
 
                 ' Save the results into the database.
 
-                Ptr = 1
+                Ptr.Value = 1
                 If IsPostBack = False Then
                     Dim rowsAffected
                     Dim userQuizDataSource As SqlDataSource = New SqlDataSource()
@@ -318,7 +324,7 @@ Partial Class TestingCenter_FinalTests_SSTasks
 
             End If
         End If
-        TxtSubject.Text = "SpreadSheet Task Results"
+        'TxtSubject.Text = "SpreadSheet Task Results"
     End Sub
 
     Protected Function GetUploadList() As String()
@@ -385,10 +391,10 @@ Partial Class TestingCenter_FinalTests_SSTasks
                 Command.ExecuteNonQuery()
 
                 strStatusMessage = myFileUpload.FileName
-                TxtBody.Text = TxtBody.Text + "  File Name:  " + lblFileName.Text + "  File Type:" + lblFileType.Text + "  File Size:" + lblFileSize.Text + "    Transferred:" + DateTime.Now.ToString
+                'TxtBody.Text = TxtBody.Text + "  File Name:  " + lblFileName.Text + "  File Type:" + lblFileType.Text + "  File Size:" + lblFileSize.Text + "    Transferred:" + DateTime.Now.ToString
             Else
                 strStatusMessage = "No file was uploaded."
-                TxtBody.Text = TxtBody.Text + strStatusMessage
+                'TxtBody.Text = TxtBody.Text + strStatusMessage
             End If
         Catch Ex As Exception
             strStatusMessage = "Unable to save the uploaded file.  " & "The error was: " & Ex.Message
@@ -443,8 +449,8 @@ Partial Class TestingCenter_FinalTests_SSTasks
         Return fileList
     End Function
     Protected Sub ExitBtn1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExitBtn1.Click
-        Freeze = 0
-        Ptr = 0
+        Freeze.Value = 0
+        Ptr.Value = 0
         fileName = ""
         Start = ""
         Response.Redirect("~/dashboard.aspx")

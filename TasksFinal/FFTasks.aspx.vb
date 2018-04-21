@@ -15,9 +15,9 @@ Partial Class TestingCenter_FinalTests_FMTasks
     Dim StartTime As DateTime = DateTime.Now.ToString
     Dim EndTime As DateTime
     Dim Start As String
-    Shared Freeze As Integer
+    'Shared Freeze As Integer
     Dim fileName As String
-    Shared Ptr As Integer = 0
+    'Shared Ptr As Integer = 0
     Dim MailMessage As System.Net.Mail.MailMessage = New System.Net.Mail.MailMessage()
     Shared TempFile1 As String
     Shared TempFile2 As String
@@ -32,8 +32,8 @@ Partial Class TestingCenter_FinalTests_FMTasks
         If IsPostBack = False Then
 
 
-            Freeze = 0
-            Ptr = 0
+            Freeze.Value = 0
+            Ptr.Value = 0
             fileName = ""
             Start = ""
 
@@ -41,10 +41,12 @@ Partial Class TestingCenter_FinalTests_FMTasks
     End Sub
 
     Protected Sub Timer1_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-        Label1.Text = DateTime.Now.ToString
-        If Label1.Text = Label2.Text Then
-            Freeze = 0
-            Ptr = 0
+        Dim startdate As DateTime
+        DateTime.TryParse(Label1.Text, startdate)
+
+        If ((DateTime.Now - startdate).TotalMinutes >= 30) Then
+            Freeze.Value = 0
+            Ptr.Value = 0
             fileName = ""
             Start = ""
             Response.Redirect("~/Login.aspx")
@@ -59,7 +61,7 @@ Partial Class TestingCenter_FinalTests_FMTasks
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
-        If Ptr = 0 Then
+        If Ptr.Value = 0 Then
             If Page.IsPostBack = False Then
                 TaskVersion = New Random().Next(1, 20)
 
@@ -73,23 +75,26 @@ Partial Class TestingCenter_FinalTests_FMTasks
                 Session.Add("Type", "FF Task")
                 If Profile.IsAnonymous = False Then
                     Session.Add("UserName", User.Identity.Name)
-
-
-                    'Else
+                Else
+                    Freeze.Value = 0
+                    Ptr.Value = 0
+                    fileName = ""
+                    Start = ""
                     '    Response.Redirect("~/Login.aspx")
                 End If
 
-                If Freeze = 0 Then
+                If Freeze.Value = 0 Then
                     EndTime = DateTime.Now.AddMinutes(30).ToString
                     Start = DateTime.Now.ToString
-                    Freeze = 1
-                    Label2.Text = EndTime.ToString
+                    Freeze.Value = 1
+                    'Label2.Text = EndTime.ToString
+                    'Label1.Text = Start.ToString
                 End If
 
                 TaskLink1.NavigateUrl = "~/FinalTests/Tasks/FM/didlFMTask" + TaskVersion.ToString + ".pdf"
                 TxtBody.Text = "Tasks/FM/didlFMTask" + X + ".pdf  -----  Start: " + Start
                 TxtName.Text = User.Identity.Name.Trim()
-                Ptr = 1
+                Ptr.Value = 1
 
                 Dim rowsAffected As String
                 Dim userQuizDataSource As SqlDataSource = New SqlDataSource()
@@ -373,9 +378,8 @@ Partial Class TestingCenter_FinalTests_FMTasks
 
 
     Protected Sub ExitBtn1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExitBtn1.Click
-
-        Freeze = 0
-        Ptr = 0
+        Freeze.Value = 0
+        Ptr.Value = 0
         fileName = ""
         Start = ""
         Response.Redirect("~/dashboard.aspx")

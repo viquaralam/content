@@ -3,9 +3,60 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" />
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+ <script type="text/javascript">
+     $(document).ready(function () {
+         var startDate = new Date();
+         if ($('[id$=_hdnStartDate]').val() == "") {
+             $('[id$=_hdnStartDate]').val(startDate.format('M/dd/yy HH:mm:ss'));
+         }
+
+         startDate = new Date($('[id$=_hdnStartDate]').val());
+         var endDate = new Date();
+         endDate.setTime(startDate.getTime() + 30*60*1000);
+         $('[id$=_Label1]').text(startDate.format('M/dd/yy HH:mm:ss'));
+         $('[id$=_Label2]').text(endDate.format('M/dd/yy HH:mm:ss'));
+
+         // Set the date we're counting down to
+         var countDownDate = endDate.getTime();
+         // Update the count down every 1 second
+
+         var x = setInterval(function () {
+
+             // Get todays date and time
+             var now = new Date().getTime();
+    
+             // Find the distance between now an the count down date
+             var distance = countDownDate - now + 1000;
+    
+             // Time calculations for days, hours, minutes and seconds
+        
+             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+             // Output the result in an element with id="demo"
+             $('[id$=_Label3]').text("The window will be closed in " + minutes + " Minutes & " + seconds + " Seconds");
+    
+             // If the count down is over, write some text 
+             if (distance < 0) {
+                 clearInterval(x);
+                 $('[id$=_Label3]').text("The window will be closed in 0 Seconds");
+                 $('[id$=_Freeze').val(0)
+                 $('[id$=_Ptr').val(0)
+                 window.location.replace("../Login.aspx");
+
+
+             }
+         }, 1000);
+     });
+</script>               
     <div class="container" style="width: 934px; height: 1123px;">
+        <asp:HiddenField ID="hdnStartDate" Value="" runat="server"/>
+        <asp:HiddenField ID="Ptr" Value="0" runat="server"/>
+        <asp:HiddenField ID="Freeze" Value="0" runat="server"/>
         <div class="row" style="width: 641px; height: 1065px;">
-            <asp:Timer ID="Timer1" runat="server" OnTick="Timer1_Tick " Interval="1000">
+            <asp:Timer ID="Timer1" runat="server" OnTick="Timer1_Tick " Interval="1800000">
             </asp:Timer>
             <table style="width: 600px; height: 526px; border-bottom: gray thin solid;" border="4"
                 cellpadding="5">
@@ -16,8 +67,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="height: 32px; font-size: 12pt;">
-                        This window will be open for 30 minutes only!
+                    <td colspan="4" style="height: 32px; font-size: 16pt; font-weight: bold; font-style: italic;">
+                    
+                        <asp:Label ID="Label3" runat="server" Text=""></asp:Label>
+                        
                     </td>
                 </tr>
                 <tr>
@@ -94,83 +147,7 @@
                         <br />
                         <br />
                         <br />
-                   <%-- <asp:FormView ID="FormView1" runat="server" DataSourceID="SqlDataSource1" 
-                    HeaderText="Class" Width="263px">
-                    <EditItemTemplate>
-                        EnrollUser:
-                        <asp:TextBox ID="EnrollUserTextBox" runat="server" 
-                            Text='<%# Bind("EnrollUser") %>' />
-                        <br />
-                        EnrollCustomerId:
-                        <asp:TextBox ID="EnrollCustomerIdTextBox" runat="server" 
-                            Text='<%# Bind("EnrollCustomerId") %>' />
-                        <br />
-                        EnrollClass:
-                        <asp:TextBox ID="EnrollClassTextBox" runat="server" 
-                            Text='<%# Bind("EnrollClass") %>' />
-                        <br />
-                        EnrollCampus:
-                        <asp:TextBox ID="EnrollCampusTextBox" runat="server" 
-                            Text='<%# Bind("EnrollCampus") %>' />
-                        <br />
-                        EnrollSchoolId:
-                        <asp:TextBox ID="EnrollSchoolIdTextBox" runat="server" 
-                            Text='<%# Bind("EnrollSchoolId") %>' />
-                        <br />
-                        <asp:LinkButton ID="UpdateButton" runat="server" CausesValidation="True" 
-                            CommandName="Update" Text="Update" />
-                        &nbsp;<asp:LinkButton ID="UpdateCancelButton" runat="server" 
-                            CausesValidation="False" CommandName="Cancel" Text="Cancel" />
-                    </EditItemTemplate>
-                    <InsertItemTemplate>
-                        EnrollUser:
-                        <asp:TextBox ID="EnrollUserTextBox" runat="server" 
-                            Text='<%# Bind("EnrollUser") %>' />
-                        <br />
-                        EnrollCustomerId:
-                        <asp:TextBox ID="EnrollCustomerIdTextBox" runat="server" 
-                            Text='<%# Bind("EnrollCustomerId") %>' />
-                        <br />
-                        EnrollClass:
-                        <asp:TextBox ID="EnrollClassTextBox" runat="server" 
-                            Text='<%# Bind("EnrollClass") %>' />
-                        <br />
-                        EnrollCampus:
-                        <asp:TextBox ID="EnrollCampusTextBox" runat="server" 
-                            Text='<%# Bind("EnrollCampus") %>' />
-                        <br />
-                        EnrollSchoolId:
-                        <asp:TextBox ID="EnrollSchoolIdTextBox" runat="server" 
-                            Text='<%# Bind("EnrollSchoolId") %>' />
-                        <br />
-                        <asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" 
-                            CommandName="Insert" Text="Insert" />
-                        &nbsp;<asp:LinkButton ID="InsertCancelButton" runat="server" 
-                            CausesValidation="False" CommandName="Cancel" Text="Cancel" />
-                    </InsertItemTemplate>
-                    <ItemTemplate>
-                        EnrollUser:
-                        <asp:Label ID="EnrollUserLabel" runat="server" 
-                            Text='<%# Bind("EnrollUser") %>' />
-                        <br />
-                        EnrollCustomerId:
-                        <asp:Label ID="EnrollCustomerIdLabel" runat="server" 
-                            Text='<%# Bind("EnrollCustomerId") %>' />
-                        <br />
-                        EnrollClass:
-                        <asp:Label ID="EnrollClassLabel" runat="server" 
-                            Text='<%# Bind("EnrollClass") %>' />
-                        <br />
-                        EnrollCampus:
-                        <asp:Label ID="EnrollCampusLabel" runat="server" 
-                            Text='<%# Bind("EnrollCampus") %>' />
-                        <br />
-                        EnrollSchoolId:
-                        <asp:Label ID="EnrollSchoolIdLabel" runat="server" 
-                            Text='<%# Bind("EnrollSchoolId") %>' />
-                        <br />
-                    </ItemTemplate>
-                </asp:FormView>--%>
+                   
                     </td>
                     <td style="vertical-align: middle; height: 182px; text-align: left" align="left"
                         colspan="2" valign="top">
@@ -221,53 +198,7 @@
                         </fieldset>
                     </td>
                 </tr>
-                <!--<tr>
-                    <td colspan="1" style="vertical-align: middle; width: 238px; vertical-align: middle;
-                        text-align: justify; height: 344px;">
-                        <span style="font-weight: bold;">Step 3.)&nbsp;</span> Fill in the blanks and submit
-                        the results.<br />
-                        <br />
-                        The form must be completely filled out and sent before the 30 minute time limit
-                        has expired.<br />
-                        <br />
-                        This window closes automatically when the time has expired or you click the "Submit
-                        Results" button.&nbsp;
-                        <br />
-                        <br />
-                        Be sure to finish uploading your files before you click the button.
-                    </td>
-                    <td style="vertical-align: middle; text-align: left; height: 344px;">
-                        <div style="width: 578px; height: 315px; font-weight: bold; font-size: 12pt; color: Black;
-                            font-family: Arial, Verdana, Tahoma">
-                            <p style="font-size: 24pt; text-align: left; vertical-align: middle;">
-                                File Management Task</p>
-                            <p>
-                                Your Email Address :
-                                <asp:TextBox ID="TxtFrom" runat="server" Columns="35" Width="349px" 
-                                    Style="text-align: left" Height="19px" />
-                                <asp:Label ID="Required1" runat="server" Font-Bold="True" ForeColor="Red" Text="Required"
-                                    Visible="False" />
-                            </p>
-                            <p>
-                                &nbsp;<asp:TextBox ID="TxtSubject" runat="server" Columns="50" Visible="false" />
-                            </p>
-                            <p>
-                                Your Name :
-                                <asp:TextBox ID="TxtName" runat="server" Columns="50" Width="406px" />
-                                <asp:Label ID="Required2" runat="server" Font-Bold="True" ForeColor="Red" Text="Required"
-                                    Visible="False" />
-                            </p>
-                            <p>
-                                &nbsp;<asp:TextBox ID="TxtTo" runat="server" ReadOnly="true" Text="taskgrading@empconcepts.com"
-                                    Columns="35" Visible="False" />
-                            </p>
-                            <asp:TextBox ID="TxtBody" runat="server" Columns="75" TextMode="MultiLine" Rows="10"
-                                Visible="True" Height="66px" Width="488px" ReadOnly="true" />
-                            <asp:Button ID="BtnSend" runat="server" Text="Submit Results" Width="495px" Style="font-weight: bold;
-                                font-size: 14pt" Height="34px" Visible="true" />
-                        </div>
-                    </td>
-                </tr>-->
+                
                 <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
                     ConnectionString="<%$ ConnectionStrings:jumpstartConnectionString %>" 
                     SelectCommand="SELECT [EnrollUser], [EnrollCustomerId], [EnrollClass], [EnrollCampus], [EnrollSchoolId] FROM [Enrollment] WHERE ([EnrollUser] = @EnrollUser)">

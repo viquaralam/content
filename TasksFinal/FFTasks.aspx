@@ -3,9 +3,60 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" />
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+ <script type="text/javascript">
+     $(document).ready(function () {
+         var startDate = new Date();
+         if ($('[id$=_hdnStartDate]').val() == "") {
+             $('[id$=_hdnStartDate]').val(startDate.format('M/dd/yy HH:mm:ss'));
+         }
+
+         startDate = new Date($('[id$=_hdnStartDate]').val());
+         var endDate = new Date();
+         endDate.setTime(startDate.getTime() + 30*60*1000);
+         $('[id$=_Label1]').text(startDate.format('M/dd/yy HH:mm:ss'));
+         $('[id$=_Label2]').text(endDate.format('M/dd/yy HH:mm:ss'));
+
+         // Set the date we're counting down to
+         var countDownDate = endDate.getTime();
+         // Update the count down every 1 second
+
+         var x = setInterval(function () {
+
+             // Get todays date and time
+             var now = new Date().getTime();
+    
+             // Find the distance between now an the count down date
+             var distance = countDownDate - now + 1000;
+    
+             // Time calculations for days, hours, minutes and seconds
+        
+             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+             // Output the result in an element with id="demo"
+             $('[id$=_Label3]').text("The window will be closed in " + minutes + " Minutes & " + seconds + " Seconds");
+    
+             // If the count down is over, write some text 
+             if (distance < 0) {
+                 clearInterval(x);
+                 $('[id$=_Label3]').text("The window will be closed in 0 Seconds");
+                 $('[id$=_Freeze').val(0)
+                 $('[id$=_Ptr').val(0)
+                 window.location.replace("../Login.aspx");
+
+
+             }
+         }, 1000);
+     });
+</script>               
     <div class="container" style="width: 934px; height: 1123px;">
+        <asp:HiddenField ID="hdnStartDate" Value="" runat="server"/>
+        <asp:HiddenField ID="Ptr" Value="0" runat="server"/>
+        <asp:HiddenField ID="Freeze" Value="0" runat="server"/>
         <div class="row" style="width: 641px; height: 1065px;">
-            <asp:Timer ID="Timer1" runat="server" OnTick="Timer1_Tick " Interval="1000">
+            <asp:Timer ID="Timer1" runat="server" OnTick="Timer1_Tick " Interval="1800000">
             </asp:Timer>
             <table style="width: 933px; height: 526px; border-bottom: gray thin solid; 
                 border-collapse: collapse; empty-cells: hide; caption-side: top;" border="4"
@@ -16,11 +67,13 @@
                             Files and Folders
                             <br />
                             Task</h2>
-                    </td>
+                    </td> 
                 </tr>
                 <tr>
                     <td colspan="3" style="height: 32px; font-size: 16pt; font-weight: bold; font-style: italic;">
-                        This window will be open for 30 minutes only!
+                    
+                        <asp:Label ID="Label3" runat="server" Text=""></asp:Label>
+                        
                     </td>
                 </tr>
                 <tr>
@@ -31,7 +84,7 @@
                             </Triggers>
                             <ContentTemplate>
                                 Start Date/Time:<br />
-                                <asp:Label ID="Label1" runat="server" Width="281px" Text="label1" Height="18px" />
+                                <asp:Label ID="Label1" runat="server" Width="281px" Text="" Height="18px" />
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </td>
@@ -39,7 +92,7 @@
                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                             <ContentTemplate>
                                 End Date/Time:<br />
-                                <asp:Label ID="Label2" runat="server" Text="Label2" Width="281px" Height="18px" />
+                                <asp:Label ID="Label2" runat="server" Text="" Width="281px" Height="18px" />
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </td>
@@ -72,68 +125,7 @@
                         <br />  
                         <br />  
                         <br />
-                    <%--<asp:FormView ID="FormView1" runat="server" DataSourceID="SqlDataSource1" HeaderText="Class"
-                        Width="240px" Height="94px" EmptyDataText="No enrollment record found">
-                        <EditItemTemplate>
-                            EnrollUser:
-                            <asp:TextBox ID="EnrollUserTextBox" runat="server" Text='<%# Bind("EnrollUser") %>' />
-                            <br />
-                            EnrollCustomerId:
-                            <asp:TextBox ID="EnrollCustomerIdTextBox" runat="server" Text='<%# Bind("EnrollCustomerId") %>' />
-                            <br />
-                            EnrollClass:
-                            <asp:TextBox ID="EnrollClassTextBox" runat="server" Text='<%# Bind("EnrollClass") %>' />
-                            <br />
-                            EnrollCampus:
-                            <asp:TextBox ID="EnrollCampusTextBox" runat="server" Text='<%# Bind("EnrollCampus") %>' />
-                            <br />
-                            EnrollSchoolId:
-                            <asp:TextBox ID="EnrollSchoolIdTextBox" runat="server" Text='<%# Bind("EnrollSchoolId") %>' />
-                            <br />
-                            <asp:LinkButton ID="UpdateButton" runat="server" CausesValidation="True" CommandName="Update"
-                                Text="Update" />
-                            &nbsp;<asp:LinkButton ID="UpdateCancelButton" runat="server" CausesValidation="False"
-                                CommandName="Cancel" Text="Cancel" />
-                        </EditItemTemplate>
-                        <InsertItemTemplate>
-                            EnrollUser:
-                            <asp:TextBox ID="EnrollUserTextBox" runat="server" Text='<%# Bind("EnrollUser") %>' />
-                            <br />
-                            EnrollCustomerId:
-                            <asp:TextBox ID="EnrollCustomerIdTextBox" runat="server" Text='<%# Bind("EnrollCustomerId") %>' />
-                            <br />
-                            EnrollClass:
-                            <asp:TextBox ID="EnrollClassTextBox" runat="server" Text='<%# Bind("EnrollClass") %>' />
-                            <br />
-                            EnrollCampus:
-                            <asp:TextBox ID="EnrollCampusTextBox" runat="server" Text='<%# Bind("EnrollCampus") %>' />
-                            <br />
-                            EnrollSchoolId:
-                            <asp:TextBox ID="EnrollSchoolIdTextBox" runat="server" Text='<%# Bind("EnrollSchoolId") %>' />
-                            <br />
-                            <asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert"
-                                Text="Insert" />
-                            &nbsp;<asp:LinkButton ID="InsertCancelButton" runat="server" CausesValidation="False"
-                                CommandName="Cancel" Text="Cancel" />
-                        </InsertItemTemplate>
-                        <ItemTemplate>
-                            User Name:
-                            <asp:Label ID="EnrollUserLabel" runat="server" Text='<%# Bind("EnrollUser") %>' />
-                            <br />
-                            Customer Id:
-                            <asp:Label ID="EnrollCustomerIdLabel" runat="server" Text='<%# Bind("EnrollCustomerId") %>' />
-                            <br />
-                            EnrollClass:
-                            <asp:Label ID="EnrollClassLabel" runat="server" Text='<%# Bind("EnrollClass") %>' />
-                            <br />
-                            EnrollCampus:
-                            <asp:Label ID="EnrollCampusLabel" runat="server" Text='<%# Bind("EnrollCampus") %>' />
-                            <br />
-                            EnrollSchoolId:
-                            <asp:Label ID="EnrollSchoolIdLabel" runat="server" Text='<%# Bind("EnrollSchoolId") %>' />
-                            <br />
-                        </ItemTemplate>
-                    </asp:FormView>--%>
+                    
                     </td>
                     <td style="height: 85px; text-align: left;" colspan="2">
                         <asp:HyperLink ID="TaskLink1" runat="server" NavigateUrl="~/FinalTests/Tasks/FM/didlFMTask1.pdf"

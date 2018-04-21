@@ -1,5 +1,5 @@
 
-Partial Class MasterPage
+Partial Class AdminMasterPage
     Inherits System.Web.UI.MasterPage
 
     Protected Sub Menu1_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Menu1.Init

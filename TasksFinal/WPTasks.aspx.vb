@@ -15,9 +15,9 @@ Partial Class TestingCenter_FinalTests_WPTasks
     Dim StartTime As DateTime = DateTime.Now.ToString
     Dim EndTime As DateTime
     Dim Start As String
-    Shared Freeze As Integer
+    'Shared Freeze As Integer
     Dim fileName As String
-    Shared Ptr As Integer = 0
+    'Shared Ptr As Integer = 0
     Dim MailMessage As System.Net.Mail.MailMessage = New System.Net.Mail.MailMessage()
     Shared TaskVersion As Integer
     Shared IdentityCol As Int16
@@ -33,8 +33,8 @@ Partial Class TestingCenter_FinalTests_WPTasks
 
                 'Label3.Text = "You have and ungraded Word Processing task. Try again later"
                 'Response.Redirect("~/Login.aspx")
-                Freeze = 0
-                Ptr = 0
+                Freeze.Value = 0
+                Ptr.Value = 0
                 fileName = ""
                 Start = ""
 
@@ -75,10 +75,12 @@ Partial Class TestingCenter_FinalTests_WPTasks
         End If
     End Sub
     Protected Sub Timer1_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-        Label1.Text = DateTime.Now.ToString
-        If Label1.Text = Label2.Text Then
-            Freeze = 0
-            Ptr = 0
+        Dim startdate As DateTime
+        DateTime.TryParse(Label1.Text, startdate)
+
+        If ((DateTime.Now - startdate).TotalMinutes >= 30) Then
+            Freeze.Value = 0
+            Ptr.Value = 0
             fileName = ""
             Start = ""
             Response.Redirect("~/Login.aspx")
@@ -161,7 +163,7 @@ Partial Class TestingCenter_FinalTests_WPTasks
             End Try
         End If
 
-        If Ptr = 0 Then
+        If Ptr.Value = 0 Then
 
             If Page.IsPostBack = False Then
                 Dim n As Integer = New Random().Next(1, 20)
@@ -175,18 +177,19 @@ Partial Class TestingCenter_FinalTests_WPTasks
                 If Profile.IsAnonymous = False Then
                     Session.Add("UserName", User.Identity.Name)
                 Else
-                    Freeze = 0
-                    Ptr = 0
+                    Freeze.Value = 0
+                    Ptr.Value = 0
                     fileName = ""
                     Start = ""
                     'Response.Redirect("~/login.aspx")
                 End If
 
-                If Freeze = 0 Then
+                If Freeze.Value = 0 Then
                     EndTime = DateTime.Now.AddMinutes(30).ToString
                     Start = DateTime.Now.ToString
-                    Freeze = 1
-                    Label2.Text = EndTime.ToString
+                    Freeze.Value = 1
+                    'Label2.Text = EndTime.ToString
+                    'Label1.Text = Start.ToString
                 End If
 
                 TaskLink1.NavigateUrl = "~/FinalTests/Tasks/WP/didlWPTask" + n.ToString + ".pdf"
@@ -197,7 +200,7 @@ Partial Class TestingCenter_FinalTests_WPTasks
 
                 ' Save the results into the database.
 
-                Ptr = 1
+                Ptr.Value = 1
                 If IsPostBack = False Then
                     Dim rowsAffected
                     Dim userQuizDataSource As SqlDataSource = New SqlDataSource()
@@ -435,8 +438,8 @@ Partial Class TestingCenter_FinalTests_WPTasks
         Return fileList
     End Function
     Protected Sub ExitBtn1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles ExitBtn1.Click
-        Freeze = 0
-        Ptr = 0
+        Freeze.Value = 0
+        Ptr.Value = 0
         fileName = ""
         Start = ""
         Response.Redirect("~/dashboard.aspx")

@@ -3,10 +3,60 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" />
-                                
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+ <script type="text/javascript">
+     $(document).ready(function () {
+         var startDate = new Date();
+         if ($('[id$=_hdnStartDate]').val() == "") {
+             $('[id$=_hdnStartDate]').val(startDate.format('M/dd/yy HH:mm:ss'));
+         }
+
+         startDate = new Date($('[id$=_hdnStartDate]').val());
+         var endDate = new Date();
+         endDate.setTime(startDate.getTime() + 30*60*1000);
+         $('[id$=_Label1]').text(startDate.format('M/dd/yy HH:mm:ss'));
+         $('[id$=_Label2]').text(endDate.format('M/dd/yy HH:mm:ss'));
+
+         // Set the date we're counting down to
+         var countDownDate = endDate.getTime();
+         // Update the count down every 1 second
+
+         var x = setInterval(function () {
+
+             // Get todays date and time
+             var now = new Date().getTime();
+    
+             // Find the distance between now an the count down date
+             var distance = countDownDate - now + 1000;
+    
+             // Time calculations for days, hours, minutes and seconds
+        
+             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+             // Output the result in an element with id="demo"
+             $('[id$=_Label3]').text("The window will be closed in " + minutes + " Minutes & " + seconds + " Seconds");
+    
+             // If the count down is over, write some text 
+             if (distance < 0) {
+                 clearInterval(x);
+                 $('[id$=_Label3]').text("The window will be closed in 0 Seconds");
+                 $('[id$=_Freeze').val(0)
+                 $('[id$=_Ptr').val(0)
+                 window.location.replace("../Login.aspx");
+
+
+             }
+         }, 1000);
+     });
+</script>               
     <div class="container" style="width: 934px; height: 1123px;">
+        <asp:HiddenField ID="hdnStartDate" Value="" runat="server"/>
+        <asp:HiddenField ID="Ptr" Value="0" runat="server"/>
+        <asp:HiddenField ID="Freeze" Value="0" runat="server"/>
         <div class="row" style="width: 641px; height: 1065px;">
-            <asp:Timer ID="Timer1" runat="server" OnTick="Timer1_Tick " Interval="1000">
+            <asp:Timer ID="Timer1" runat="server" OnTick="Timer1_Tick " Interval="1800000">
             </asp:Timer>
                     
             
@@ -23,7 +73,7 @@
                 <tr>
                     <td colspan="4" style="height: 32px; font-size: 16pt; font-weight: bold; font-style: italic;">
                     
-                        <asp:Label ID="Label3" runat="server" Text="The window will be closed in 30 minutes!"></asp:Label>
+                        <asp:Label ID="Label3" runat="server" Text=""></asp:Label>
                         
                     </td>
                     
